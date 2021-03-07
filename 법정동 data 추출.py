@@ -39,3 +39,5 @@ get_province()
 
 p = '제주특별자치도'
 df_province.loc[df_province['법정동명']==p, '법정동코드'].values[0]
+
+# 법정동 데이터를 활용해서 특정 지역의 아파트 단지명을 불러오는 방법에 대해 공부해보기
