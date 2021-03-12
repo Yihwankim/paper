@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from selenium.webdriver.common.keys import Keys
 
+
+# 2021.03.12 연구노트 작성
+
 df_dongdaemoongu = pd.read_excel('Gangbuk/dongdaemoongu.xlsx',sheet_name='답십리동', header=0, skipfooter=0, usecols='C:D, G:H')
 
 df_dongdaemoongu = df_dongdaemoongu.sort_values(by=['아파트'])
