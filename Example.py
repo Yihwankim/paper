@@ -17,6 +17,7 @@ df_name = df_dongdaemoongu[['읍면동','아파트']] #여러 열을 추출하�
 df_name = df_name.astype('str')
 df_name = df_name['읍면동'] + " " + df_name['아파트']
 
+#df_name = df_name[18:25] # test
 print(len(df_name))
 
 chrome = webdriver.Chrome('chromedriver.exe')
@@ -37,8 +38,6 @@ heat = [] #난방 / 난방방식
 #area = [] #면적
 
 
-for i in range (apt_len) :
-    print(i)
 
 
 
@@ -91,29 +90,41 @@ for i in range (apt_len) :
             # input.submit()
             search.send_keys(Keys.ENTER)  # 특정키를 입력하고 싶은 경우
             # chrome.find_element_by_class_name("title")[ddf.index(Apt_name[i])].click()
-            time.sleep(4)
-            link = chrome.find_element_by_css_selector(
-                '#summaryInfo > div.complex_summary_info > div.complex_detail_link > button:nth-child(1)')
-            link.click()
-            time.sleep(4)
+            try:
+                time.sleep(4)
+                link = chrome.find_element_by_css_selector(
+                    '#summaryInfo > div.complex_summary_info > div.complex_detail_link > button:nth-child(1)')
+                link.click()
+                time.sleep(4)
 
-            number_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(1) > td:nth-child(2)"
-            number.append(chrome.find_element_by_css_selector(number_selector).text)
-            floor_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(1) > td:nth-child(4)"
-            floor.append(chrome.find_element_by_css_selector(floor_selector).text)
-            confirm_date_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > td:nth-child(2)"
-            confirm_date.append(chrome.find_element_by_css_selector(confirm_date_selector).text)
-            car_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > td:nth-child(4)"
-            car.append(chrome.find_element_by_css_selector(car_selector).text)
-            FAR_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(3) > td:nth-child(2)"
-            FAR.append(chrome.find_element_by_css_selector(FAR_selector).text)
-            BC_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(3) > td:nth-child(4)"
-            BC.append(chrome.find_element_by_css_selector(BC_selector).text)
-            con_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(4) > td"
-            con.append(chrome.find_element_by_css_selector(con_selector).text)
-            heat_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(5) > td"
-            heat.append(chrome.find_element_by_css_selector(heat_selector).text)
-    except:
+                number_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(1) > td:nth-child(2)"
+                number.append(chrome.find_element_by_css_selector(number_selector).text)
+                floor_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+                floor.append(chrome.find_element_by_css_selector(floor_selector).text)
+                confirm_date_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > td:nth-child(2)"
+                confirm_date.append(chrome.find_element_by_css_selector(confirm_date_selector).text)
+                car_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+                car.append(chrome.find_element_by_css_selector(car_selector).text)
+                FAR_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(3) > td:nth-child(2)"
+                FAR.append(chrome.find_element_by_css_selector(FAR_selector).text)
+                BC_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+                BC.append(chrome.find_element_by_css_selector(BC_selector).text)
+                con_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(4) > td"
+                con.append(chrome.find_element_by_css_selector(con_selector).text)
+                heat_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(5) > td"
+                heat.append(chrome.find_element_by_css_selector(heat_selector).text)
+            except:
+
+                number.append(np.nan)
+                floor.append(np.nan)
+                confirm_date.append(np.nan)
+                car.append(np.nan)
+                FAR.append(np.nan)
+                BC.append(np.nan)
+                con.append(np.nan)
+                heat.append(np.nan)
+
+    except Exception as ex :
         choice = chrome.find_element_by_css_selector(
             '#ct > div.map_wrap > div.search_panel > div.list_contents > div > div > div:nth-child(2) > div > a')
         choice.click()
@@ -138,6 +149,9 @@ for i in range (apt_len) :
         con.append(chrome.find_element_by_css_selector(con_selector).text)
         heat_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(5) > td"
         heat.append(chrome.find_element_by_css_selector(heat_selector).text)
+
+        #검색창에 clear 넣기
+        #try except를 안에 한번 더 넣기
 
 
 #한자입력 오류발생
