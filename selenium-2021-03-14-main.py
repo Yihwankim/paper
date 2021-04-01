@@ -15,7 +15,7 @@ from urllib.parse import urlparse #출처: https://datamasters.co.kr/67 [데이�
 
 
 #엑셀값 출력
-df_dongdaemoongu = pd.read_excel('Gangbuk/dongdaemoongu.xlsx',sheet_name='장안동', header=0, skipfooter=0, usecols='C:D, G:H')
+df_dongdaemoongu = pd.read_excel('Gangbuk/dongdaemoongu.xlsx',sheet_name=1, header=0, skipfooter=0, usecols='C:D, G:H')
 
 df_dongdaemoongu = df_dongdaemoongu.drop_duplicates(['아파트'],keep='first')
 df_dongdaemoongu = df_dongdaemoongu.sort_values(by=['아파트'])
@@ -74,35 +74,36 @@ def null():
 
 ## 함수선언 종료
 
-chrome = webdriver.Chrome('chromedriver.exe')
+number = []  # 세대수
+floor = []  # 저/최고층
+confirm_date = []  # 사용승인일
+car = []  # 주차대수
+# Floor Area Ratio
+FAR = []  # 용적률
+# Building Coverage
+BC = []  # 건폐율
+con = []  # 건설사
+heat = []  # 난방 / 난방방식
+lat = []  # 위도
+long = []  # 경도
+code = []  # 아파트 코드
+# 새로 추가할 정보 방갯수
+# office_number = []
+# add = [] #주소
+# area = [] #면적
+
+
 
 apt_len = len(se_name)  #단지명 리스트의 길이.
-number = [] #세대수
-floor = [] #저/최고층
-confirm_date = [] #사용승인일
-car = [] #주차대수
-#Floor Area Ratio
-FAR = [] #용적률
-#Building Coverage
-BC = [] #건폐율
-con = [] #건설사
-heat = [] #난방 / 난방방식
-lat = [] #위도
-long = [] #경도
-code = [] #아파트 코드
-#office_number = []
-#add = [] #주소
-#area = [] #면적
-
+chrome = webdriver.Chrome('chromedriver.exe')
 
 for i in range(apt_len):
-    # 네이버 부동산 실행
     apt = se_name[i]
     # Copy selector을 해서 원하는 '검색창'의 정보를 불러온다.
     # queryInputHeader = 해당 검색창의 selector
     try:
         if i == 0:
-            chrome.get('https://land.naver.com/')
+            chrome.get('https://land.naver.com/') # 네이버 부동산 실행
             time.sleep(1)
             # apt = df_name[0]
             # Copy selector을 해서 원하는 '검색창'의 정보를 불러온다.

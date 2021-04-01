@@ -66,6 +66,7 @@ def get_url_info():
 
 # 함수선언 3: nan 값 입력
 def input_nan_if_null():
+    apt_name.append(np.nan)
     number.append(np.nan)
     floor.append(np.nan)
     confirm_date.append(np.nan)

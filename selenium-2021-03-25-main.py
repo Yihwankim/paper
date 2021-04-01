@@ -184,6 +184,7 @@ collect()
 #n_this_area'i' = [] #해당면적 세대수
 
 for i in range(10):
+    def
     if i==0:
         area1_selector = "#tabpanel > table > tbody > tr:nth-child(1) > td"
         area1.append(chrome.find_element_by_css_selector(area1_selector).text)
@@ -200,17 +201,15 @@ for i in range(10):
         n_this_area1(chrome.find_element_by_css_selector(n_this_area1_selector).text)
 
     else:
+        num2 = "#tab" + i + "> span"
+        chrome.find_element_by_css_selector(num2).click()
+
         try:
-            num2 = chrome.find_element_by_css_selector("#tab1 > span")
-            num2.click()
+
 
 
 #tab1 > span
 #tab2 > span
-
-url()
-
-
 
 apt_len = len(se_name)  #단지명 리스트의 길이.
 chrome = webdriver.Chrome('chromedriver.exe')
