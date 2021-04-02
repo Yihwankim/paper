@@ -147,6 +147,7 @@ def get_capacity_info():
 # 함수선언 6: 크롤링한 data DataFrame 에 append 하기
 
 def appending_to_df():
+    df_dongdaemoongu['Apt_name'] = apt_name
     df_dongdaemoongu['number'] = number
     df_dongdaemoongu['floor'] = floor
     df_dongdaemoongu['confirm_date'] = confirm_date
@@ -222,14 +223,12 @@ def appending_to_df():
 
 ########################################################################################################################
 # 엑셀값 출력
-df_dongdaemoongu = pd.read_excel('Gangbuk/dongdaemoongu.xlsx', sheet_name='답십리동', header=0, skipfooter=0,
+
+df_dongdaemoongu = pd.read_excel('Gangbuk/dongdaemoongu.xlsx', sheet_name=None, header=0, skipfooter=0,
                                  usecols='C:D, G:H')
 
-# (보류) df_dongdaemoongu = pd.read_excel('Gangbuk/dongdaemoongu.xlsx', sheet_name=None, header=0, skipfooter=0, usecols='C:D, G:H')
-
-
 # 출력한 엑셀값 하나로 합치기
-# (보류) df_dongdaemoongu = pd.concat(df_dongdaemoongu, ignore_index='Ture')
+df_dongdaemoongu = pd.concat(df_dongdaemoongu, ignore_index='Ture')
 
 df_dongdaemoongu = df_dongdaemoongu.drop_duplicates(['아파트'], keep='first')
 df_dongdaemoongu = df_dongdaemoongu.sort_values(by=['아파트'])
@@ -420,6 +419,13 @@ appending_to_df()
 
 # 스크래핑 종료
 ########################################################################################################################
+
+# 91번째 row 삭제
+apt = pd.DataFrame(apt_name)
+df_apt = apt.drop(index=91)
+apt_name = df_apt.values.tolist()
+
+# 나머지 리스트도 데이터 프레임에 합쳐주기
 
 
 # 결과값 엑셀로 내보내기

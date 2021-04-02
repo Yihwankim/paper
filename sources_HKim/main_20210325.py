@@ -9,7 +9,7 @@
 
 # 목표:
 # 1. 방갯수, 화장실 수, age c정보 append 시키기
-# 2. 함수로 엑셀을 호출하면 한번 실행시 알아서 다 할 수 있도록 조치하기
+# 2. 함수로 엑셀을 호출하면  한번 실행시 알아서 다 할 수 있도록 조치하기
 
 # Import Packages
 from selenium import webdriver
@@ -287,8 +287,8 @@ for i in range(apt_len):
             get_url_info()
 
             chrome.find_element_by_css_selector('#search_input').clear
-            print("Notice: " + i + "/" + apt_len + " scrapping finished")
 
+            print("Notice: " + i + "/" + apt_len + " scrapping finished")
             time.sleep(1)
 
         else:
@@ -324,11 +324,15 @@ for i in range(apt_len):
             get_apt_info()
             get_url_info()
 
+            print("Notice: " + i + "/" + apt_len + " scrapping finished")
+
         except Exception as ex:
             research = chrome.find_element_by_css_selector('#search_input')
             research.clear()
 
             input_nan_if_null()
+
+            print("Notice: " + i + "/" + apt_len + " scrapping finished")
 
             chrome.back()
             try:
