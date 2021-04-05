@@ -557,6 +557,7 @@ print('n_this_area10: ', len(n_this_area10))
 # print(apt_name)
 # apt_name[124]
 # apt_name.pop(124)
+# 해당 전처리는 주피터 노트북에서 처리하도록 하자.
 
 # 결과값 엑셀로 내보내기
 df_Gu.to_excel('Gangbuk_edit1/Eunpyeonggu_edit1.xlsx', sheet_name='edit1', index=False)
