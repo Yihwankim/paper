@@ -273,7 +273,7 @@ def appending_to_df():
 ########################################################################################################################
 # 엑셀값 출력
 
-df_Gu = pd.read_excel('Gangbuk/Gangbukgu.xlsx', sheet_name=None, header=0, skipfooter=0,
+df_Gu = pd.read_excel('Gangbuk/Eunpyeonggu.xlsx', sheet_name=None, header=0, skipfooter=0,
                       usecols='C:D, G:H')
 
 # 출력한 엑셀값 하나로 합치기
@@ -553,9 +553,10 @@ print('toilet10: ', len(toilet10))
 print('structure10: ', len(structure10))
 print('n_this_area10: ', len(n_this_area10))
 
-
-# print(apt_name)  # 35번쩨 항목에서 문제발생
-# apt_name.pop(34)
+# apt_name 일치 안할 경우, 해당 항목 drop
+# print(apt_name)
+# apt_name[124]
+# apt_name.pop(124)
 
 # 결과값 엑셀로 내보내기
-df_Gu.to_excel('Gangbuk_edit1/Gangbukgu_edit1.xlsx', sheet_name='edit1', index=False)
+df_Gu.to_excel('Gangbuk_edit1/Eunpyeonggu_edit1.xlsx', sheet_name='edit1', index=False)
