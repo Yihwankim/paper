@@ -553,10 +553,18 @@ print('toilet10: ', len(toilet10))
 print('structure10: ', len(structure10))
 print('n_this_area10: ', len(n_this_area10))
 
-# apt_name 일치 안할 경우, 해당 항목 drop
-# print(apt_name)
-# apt_name[124]
-# apt_name.pop(124)
+#############################################################
+# apt_name 의 length 가 맞지 않아 데이터프레임이 합쳐지지 않을 경우.
+# apt_name 일치 안할 경우, 해당 항목을 drop 시켜야 한다.
+# 확인하기 위한 코드
+
+# df_apt_name = pd.DataFrame(apt_name)
+# df_check = pd.concat([df_Gu, df_apt_name], axis=1)
+# df_check
+# print(apt_name[?])
+# apt_name.pop(?)
+#############################################################
+
 # 해당 전처리는 주피터 노트북에서 처리하도록 하자.
 
 # 결과값 엑셀로 내보내기
