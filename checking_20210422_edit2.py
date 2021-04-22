@@ -319,10 +319,10 @@ def appending_to_df():
 
 # 엑셀값 출력
 
-df_Gu = pd.read_excel('Gangnam_edit1/Dongjakgu_edit1.xlsx', sheet_name='edit1', header=0, skipfooter=0)
+df_Gu = pd.read_excel('Gangnam_edit1/Yangcheongu_edit1.xlsx', sheet_name='edit1', header=0, skipfooter=0)
 
 # 수정된 엑셀파일 다시 불러오고, sorting 다시 하기
-df_Gu2 = pd.read_excel('Gangnam_edit2/Dongjakgu_edit2.xlsx', sheet_name='edit2', header=0, skipfooter=0,
+df_Gu2 = pd.read_excel('Gangnam_edit2/Yangcheongu_edit2.xlsx', sheet_name='edit2', header=0, skipfooter=0,
                        usecols='B:E')
 
 df_name = df_Gu2[['읍면동', '아파트']]  # 여러 열을 추출하고 싶을때는 [[ 두개를 사용 ]]
@@ -606,4 +606,4 @@ appending_to_df()
 df_Gu3 = pd.concat([df_Gu2, df_Gu])
 
 # 결과값 엑셀로 내보내기
-df_Gu3.to_excel('Gangnam_edit3/Dongjakgu_edit3.xlsx', sheet_name='edit3', index=False)
+df_Gu3.to_excel('Gangnam_edit3/Yangcheongu_edit3.xlsx', sheet_name='edit3', index=False)
