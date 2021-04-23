@@ -1,19 +1,45 @@
-# 2021-04-19
+# 2021-04-23
 
 # 최종 비교시 고려할 사항
-# 1. 아파트 이름(인덱스)과 읍면동, 아파트 정보가 동일한지 여부
-# 2. 아파트 세대수가 면적별 세대수의 합과 동일한지 여부
-# 3. type of capacity 의 모든 element 가 nan 으로 채워져 있을 경우 오류가 발생하므로 주의
+#
 
 # Import packages
 import pandas as pd
 import numpy as np
 
 #############################################################################################################
-# 엑셀 파일 불러오기
-df_data = pd.read_excel('Gangnam_edit3/Gwanakgu_edit3.xlsx')
+# 엑셀 파일 한번에 불러오기
+# 강북 엑셀파일 불러오기
 
-df_Gu = pd.read_excel('Gangnam_edit3/Gwanakgu_edit3.xlsx', usecols='A:P')
+filenames_GB = [
+    'Dobonggu_edit3', 'Dongdaemoongu_edit3',
+    'Eunpyeonggu_edit3', 'Gangbukgu_edit3',
+    'Gwangjingu_edit3', 'Jongnogu_edit3',
+    'Junggu_edit3', 'Jungnanggu_edit3',
+    'Mapogu_edit3', 'Nowongu_edit3',
+    'Seodaemungu_edit3', 'Seongbukgu_edit3',
+    'Seongdonggu_edit3', 'Yongsangu_edit3'
+]
+
+dfs = []
+
+for fname in filenames_GB:
+    print('Loading {}'.format(fname))
+
+    df = pd.read_excel('Gangbuk_edit3/{}.xlsx'.format(fname))
+    #df.columns = [fname]
+
+    dfs.append(df)
+
+print('Data loading is completed!')
+
+df_GB = pd.concat(dfs, axis=0)  # axis=0 : 밑으로 붙이기
+
+###########################################################################################
+
+df_GB_data = pd.read_excel('Gangbuk_edit3/Dobonggu_edit3.xlsx')
+
+df_GB_ = pd.read_excel('Gangbuk_edit3/Dobonggu_edit3.xlsx', usecols='A:P')
 
 #############################################################################################################
 # 6개의 컬럼으로 나누어진 면적별 정보를 하나의 칼럼으로 합쳐서 시리즈로 저장하기
@@ -125,37 +151,37 @@ se_type17 = df_data['type_capacity17'].str.cat(df_data[['area17',
 
 # 해당 오류 발생시 밑의 코드를 탄력적으로 수정
 # 원본
-df_Gu = pd.concat([df_Gu, se_type1, se_type2, se_type3, se_type4, se_type5, se_type6, se_type7, se_type8,
-                  se_type9, se_type10, se_type11, se_type12, se_type13, se_type14, se_type15, se_type16, se_type17],
-                  axis=1)
-
-
 #df_Gu = pd.concat([df_Gu, se_type1, se_type2, se_type3, se_type4, se_type5, se_type6, se_type7, se_type8,
-#                   se_type9, se_type10, se_type11, se_type12, se_type13],
-#                  axis=1)  # 만들어 둔 시리즈를 기존의 데이터 프레임에 합치기
+#                  se_type9, se_type10, se_type11, se_type12, se_type13, se_type14, se_type15, se_type16, se_type17],
+#                  axis=1)
+
+
+df_Gu = pd.concat([df_Gu, se_type1, se_type2, se_type3, se_type4, se_type5, se_type6, se_type7, se_type8,
+                   se_type9, se_type10, se_type11, se_type12, se_type13],
+                  axis=1)  # 만들어 둔 시리즈를 기존의 데이터 프레임에 합치기
 
 #############################################################################################################
 
 # 하나의 컬럼으로 만들어 둔 면적별 정보(type_capacity)에 따라 아파트 기본 정보들을 stack 시키기
 # 에러 처리
 # 원본
-df_edit = df_Gu.melt(id_vars=['읍면동', '아파트', '세대수', '입주년월', 'Apt_name', 'number', 'floor',
-                              'confirm_date', 'car', 'FAR', 'BC', 'con', 'heat', 'code', 'lat',
-                              'long'], value_vars=['type_capacity1', 'type_capacity2', 'type_capacity3',
-                                                   'type_capacity4', 'type_capacity5', 'type_capacity6',
-                                                   'type_capacity7', 'type_capacity8', 'type_capacity9',
-                                                   'type_capacity10', 'type_capacity11', 'type_capacity12',
-                                                   'type_capacity13', 'type_capacity14', 'type_capacity15',
-                                                   'type_capacity16', 'type_capacity17'])
-
-# 수정
 #df_edit = df_Gu.melt(id_vars=['읍면동', '아파트', '세대수', '입주년월', 'Apt_name', 'number', 'floor',
 #                              'confirm_date', 'car', 'FAR', 'BC', 'con', 'heat', 'code', 'lat',
 #                              'long'], value_vars=['type_capacity1', 'type_capacity2', 'type_capacity3',
 #                                                   'type_capacity4', 'type_capacity5', 'type_capacity6',
 #                                                   'type_capacity7', 'type_capacity8', 'type_capacity9',
 #                                                   'type_capacity10', 'type_capacity11', 'type_capacity12',
-#                                                   'type_capacity13'])
+#                                                   'type_capacity13', 'type_capacity14', 'type_capacity15',
+#                                                   'type_capacity16', 'type_capacity17'])
+
+# 수정
+df_edit = df_Gu.melt(id_vars=['읍면동', '아파트', '세대수', '입주년월', 'Apt_name', 'number', 'floor',
+                              'confirm_date', 'car', 'FAR', 'BC', 'con', 'heat', 'code', 'lat',
+                              'long'], value_vars=['type_capacity1', 'type_capacity2', 'type_capacity3',
+                                                   'type_capacity4', 'type_capacity5', 'type_capacity6',
+                                                   'type_capacity7', 'type_capacity8', 'type_capacity9',
+                                                   'type_capacity10', 'type_capacity11', 'type_capacity12',
+                                                   'type_capacity13'])
 
 ############################################################################################
 
@@ -175,7 +201,26 @@ df_edit2['n_this_area'] = type_information.str.get(5)
 df_Gu_last = df_edit2.drop(['value', 'variable', '아파트',
                             '세대수', '입주년월'], axis=1)  # 필요없어진 값 제거
 
-df_Gu_last.insert(0, 'Gu', '관악구')  # 이름 확인 주의
+df_Gu_last.insert(0, 'Gu', '도봉구')  # 이름 확인 주의
+
+df = df_Gu_last[['Gu', '읍면동', 'Apt_name']]
+
+df[['세대수', '동 개수']] = df_Gu_last['number'].str.split('(', n=1, expand=True)  # number 분리
+df[['저층', '고층']] = df_Gu_last['floor'].str.split('/', expand=True)
+#df['사용승인일'] = pd.to_datetime(df_Gu_last['confirm_date'])
+df[['주차대수_총', '주차대수_세대당']] = df_Gu_last['car'].str.split('/', n=1, expand=True)
+df['용적률'] = df_Gu_last['']
 
 
-df_Gu_last.to_excel('Gangnam_edit4/Gwanakgu_edit3.xlsx', sheet_name='edit4', index=False)  # 이름 확인 주의
+# df = df_Gu_last.set_index('Apt_name')  # 비교가 용이하도록 Apt_name 을 인덱스로 설정
+
+df.to_excel('Gangbuk_edit4/Dobonggu_edit4.xlsx', sheet_name='edit1', index=True)  # 이름 확인 주의
+
+
+df = df_Gu_last[['Gu', '읍면동', 'Apt_name']]
+
+df[['세대수', '동 개수']] = df_Gu_last['number'].str.split('(', n=1, expand=True)  # number 분리
+df[['저층', '고층']] = df_Gu_last['floor'].str.split('/', expand=True)
+#df['사용승인일'] = pd.to_datetime(df_Gu_last['confirm_date'])
+df[['주차대수_총', '주차대수_세대당']] = df_Gu_last['car'].str.split('/', n=1, expand=True)
+df['용적률'] = df_Gu_last['']
