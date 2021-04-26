@@ -1,4 +1,6 @@
-# 2021-04-23
+# 2021-04-26
+# melt 가 이루어진 edit_4 엑셀 파일들을 하나의 엑셀파일로 통합하기
+# 이때 각 컬럼들을 숫자, 문자열 등으로 구분하여 타입을 재지정해주기
 
 
 # Import packages
@@ -75,7 +77,7 @@ df_seoul = df_seoul.reset_index(drop='Ture')
 
 # seoul data 편집하기
 
-df_seoul.replace('-', np.nan)
+df_seoul = df_seoul.replace('-', np.nan)
 
 df = df_seoul[['Gu', '읍면동', 'Apt_name']]
 df.columns = ['지역구', '법정동', '아파트']
