@@ -62,11 +62,6 @@ df_seoul = df_seoul.reset_index(drop='Ture')
 df_seoul['해당면적 세대수'] = pd.to_numeric(df['해당면적 세대수'])
 df_seoul['공급면적(㎡)'] = pd.to_numeric(df['공급면적(㎡)'])
 
-df_seoul.to_excel('Seoul_edit.xlsx', sheet_name='total', index=False)
-
-########################################################################################
-df_seoul = pd.read_excel('Seoul_edit.xlsx', header=0, skipfooter=0)
-
 df_seoul['방 개수'] = pd.to_numeric(df_seoul['방 개수'])
 df_seoul['화장실 개수'] = pd.to_numeric(df_seoul['화장실 개수'])
 
