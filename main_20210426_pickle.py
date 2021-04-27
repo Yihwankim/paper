@@ -62,9 +62,13 @@ df_seoul = df_seoul.sort_values(by=['matching'])
 
 df_seoul_202010 = pd.merge(df_seoul, df_price_202010, on="matching")
 
-df_seoul_202010['sorting'] = df_seoul_202010['matching'] + " " + df_seoul_202010['층'] + df_seoul_202010['거래금액']
-df_seoul_202010 = df_seoul_202010.sort_values(by=['sorting'])
-df_seoul_202010 = df_seoul_202010.drop_duplicates(['sorting'], keep='first')
+df_seoul_202010['sorting1'] = df_seoul_202010['아파트_y'] + " " + df_seoul_202010['층'] + df_seoul_202010['거래금액']
+df_seoul_202010 = df_seoul_202010.sort_values(by=['sorting1'])
+df_seoul_202010 = df_seoul_202010.drop_duplicates(['sorting1'], keep='first')
+
+df_seoul_202010['sorting2'] = df_seoul_202010['matching'] + " " + df_seoul_202010['층']
+df_seoul_202010 = df_seoul_202010.sort_values(by=['sorting2'])
+df_seoul_202010 = df_seoul_202010.drop_duplicates(['sorting2'], keep='first')
 
 # 세부적인 조정
 df_seoul_2020_4q = df_seoul_202010[['지역구', '법정동', '아파트_x', '아파트_y', '아파트코드', '사용승인일', '연수',
@@ -80,7 +84,16 @@ cost = df_seoul_2020_4q['거래금액'].str.split(',')
 df_seoul_2020_4q['거래금액'] = cost.str.get(0) + cost.str.get(1)
 df_seoul_2020_4q['거래금액'] = pd.to_numeric(df_seoul_2020_4q['거래금액'])
 
+# df_seoul_2020_4q = df_seoul_2020_4q.sort_values(by=['아파트_x'])
+
+df_seoul_2020_4q = df_seoul_2020_4q.dropna(axis=0)
+
 # 엑셀파일로 변환 가격정보를 합쳤으므로 어떤 가격정보를 합쳤는지 표기해주기 위해 해당 시기를 붙일 것 ( 예) Seoul + 20204Q )
 df_seoul_2020_4q.to_excel('seminar data/Seoul_20204Q.xlsx', index=False)
 
+###########################################
+data04 = pd.read_pickle('data_raw/df_dataset_201704.pkl')
 
+data05 = pd.read_pickle('data_raw/df_dataset_201705.pkl')
+
+data06 = pd.read_pickle('data_raw/df_dataset_201706.pkl')

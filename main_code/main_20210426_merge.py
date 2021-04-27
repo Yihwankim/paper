@@ -63,10 +63,10 @@ df_GN = pd.concat(dfs2, axis=0)  # axis=0 : 밑으로 붙이기
 
 # 강북데이터와 강남데이터를 각각 edit4 폴더에 새롭게 저장한 후 합치기
 
-# df_GB.to_excel('Gangbuk_edit4/Gangbuk_total.xlsx', sheet_name='Gangbuk', index=False)
-# df_GN.to_excel('Gangnam_edit4/Gangnam_total.xlsx', sheet_name='Gangnam', index=False)
+df_GB.to_excel('Gangbuk_edit4/Gangbuk_total.xlsx', sheet_name='Gangbuk', index=False)
+df_GN.to_excel('Gangnam_edit4/Gangnam_total.xlsx', sheet_name='Gangnam', index=False)
 
-df_GB = pd.read_excel('Gangnam_edit4/Gangnam_total.xlsx', header=0, skipfooter=0)
+df_GB = pd.read_excel('Gangbuk_edit4/Gangbuk_total.xlsx', header=0, skipfooter=0)
 df_GN = pd.read_excel('Gangnam_edit4/Gangnam_total.xlsx', header=0, skipfooter=0)
 
 
