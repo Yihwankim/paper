@@ -52,6 +52,8 @@ def get_apt_data(LAWD_CD, DEAL_YMD, serviceKey, numOfRows=10000):
 ########################################################################################################################
 # 함수 작동 여부 확인
 serviceKey_HKim = "L2bxTcSSMqCj6TrXC3gwMUrZ6N34nwOC9RkkqQiW0ZlxY2MhEaeqpgEcyj8nNJ%2F8UO8tv76Q2YVLo5e01tL15A%3D%3D"
+serviceKey_YKim = "%2F2a7hudNIqdsS1Uq7SaicUQYvpno8zZ4M53iUr4PgZnXIDq4SMhbDLNHrk6PfFXNdnb7LuNpEffhq8YXRq2dbQ%3D%3D"
+serviceKey_ELee = "qsGZz9dk4cJcJQl49SOrzReTZlntOB%2FxGF1aXfwPUeyr1HOhvWaKySoBN1sqiKX3gPavncLjqKGAAkI4ErVsGg%3D%3D"
 df_tmp1 = get_apt_data(LAWD_CD=11110, DEAL_YMD=202102, serviceKey=serviceKey_HKim)
 
 
