@@ -38,6 +38,9 @@ df_edit['matching'].astype('str')
 df_edit = df_edit.sort_values(by=['matching'])
 
 df_price_202010 = df_edit[['matching', '아파트', '거래금액', '월', '층']]
+
+df_price_202010 = df_price_202010.sort_values(by=['층'])  # 간혹 층이 음수값으로 기입된 경우가 있을 수 있으니 별도로 확인이 필요하다.
+
 ####################################################################################################
 # 크롤링 데이터 불러오기
 df_seoul = pd.read_excel('seminar data/Seoul_last.xlsx', header=0, skipfooter=0)
