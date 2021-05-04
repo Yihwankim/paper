@@ -55,11 +55,15 @@ D5 D6
 reg 거래금액 age 세대수 주차대수_세대 용적률 건폐율 전용률 방개수 화장실개수 층 D2 D3 ///
 D5 D6  ,r
 
+outreg2 using data/table.xls, replace se label dec(1)
+
 * 종속변수에 log를 취하여 분석
 gen ln_price = ln(거래금액)
 
 reg ln_price age 세대수 주차대수_세대 용적률 건폐율 전용률 방개수 화장실개수 층 D2 D3 ///
-D5 D6 
+D5 D6 ,r
+outreg2 using data/table.xls, append se label dec(2)
+
 
 export excel using 2017_2Q_data.xlsx, replace
 
@@ -115,12 +119,16 @@ D5 D6
 * 종속변수에 log를 취하여 분석
 gen ln_price = ln(거래금액)
 
-reg ln_price age 세대수 주차대수_세대 용적률 건폐율 전용률 방개수 화장실개수 층 D2 D3 ///
-D5 D6 
 
 reg 거래금액 age 세대수 주차대수_세대 용적률 건폐율 전용률 방개수 화장실개수 층 D2 D3 ///
 D5 D6  ,r
 
-export excel using 2020_4Q_data.xlsx, replace
+outreg2 using data/table.xls, append se label dec(3)
+
+reg ln_price age 세대수 주차대수_세대 용적률 건폐율 전용률 방개수 화장실개수 층 D2 D3 ///
+D5 D6 ,r
+outreg2 using data/table.xls, append se label dec(4)
+
+export excel using data/2020_4Q_data.xlsx, replace
 
 log close
