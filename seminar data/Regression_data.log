@@ -3,7 +3,7 @@
        log:  C:\Users\Kimyihwan\OneDrive - kaist.ac.kr\paper_prepare\seminar data\
 > Regression_data.log
   log type:  text
- opened on:  28 Apr 2021, 22:53:03
+ opened on:  29 Apr 2021, 00:00:01
 
 . 
 . ********************************
@@ -194,6 +194,11 @@ Linear regression                               Number of obs     =     18,649
 -------------------------------------------------------------------------------
 
 . 
+. outreg2 using data/table.xls, replace se label dec(1)
+data/table.xls
+dir : seeout
+
+. 
 . * 종속변수에 log를 취하여 분석
 . gen ln_price = ln(거래금액)
 
@@ -228,6 +233,8 @@ Linear regression                               Number of obs     =     18,649
         _cons |   9.012642   .0465711   193.52   0.000     8.921358    9.103925
 -------------------------------------------------------------------------------
 
+. 
+. 
 . 
 . export excel using 2017_2Q_data.xlsx, replace
 file 2017_2Q_data.xlsx saved
@@ -455,8 +462,13 @@ Linear regression                               Number of obs     =      9,902
 -------------------------------------------------------------------------------
 
 . 
-. export excel using 2020_4Q_data.xlsx, replace
-file 2020_4Q_data.xlsx saved
+. outreg2 using data/table.xls, append se label dec(2)
+data/table.xls
+dir : seeout
+
+. 
+. export excel using data/2020_4Q_data.xlsx, replace
+file data/2020_4Q_data.xlsx saved
 
 . 
 . log close
@@ -464,5 +476,5 @@ file 2020_4Q_data.xlsx saved
        log:  C:\Users\Kimyihwan\OneDrive - kaist.ac.kr\paper_prepare\seminar data\
 > Regression_data.log
   log type:  text
- closed on:  28 Apr 2021, 22:53:18
+ closed on:  29 Apr 2021, 00:00:16
 ----------------------------------------------------------------------------------
