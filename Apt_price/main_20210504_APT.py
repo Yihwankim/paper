@@ -109,11 +109,11 @@ print("Elapsed (in this code): " + str(time_this_code_end - time_this_code_start
 ########################################################################################################################
 # check the data
 
-data1 = pd.read_pickle('data_raw/df_dataset_202007.pkl')
+# data1 = pd.read_pickle('data_raw/df_dataset_201708.pkl')
 
-data2 = pd.read_pickle('data_raw/df_dataset_202008.pkl')
+# data2 = pd.read_pickle('data_raw/df_dataset_202008.pkl')
 
-data3 = pd.read_pickle('data_raw/df_dataset_202009.pkl')
+# data3 = pd.read_pickle('data_raw/df_dataset_202009.pkl')
 
 ########################################################################################################################
 ########################################################################################################################
