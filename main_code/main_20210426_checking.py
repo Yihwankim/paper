@@ -1,5 +1,8 @@
-# 2021-04-26
-# edit_2를 통해 edit_3를 만드는 전처리 과정
+# 2021-05-07
+# Chapter 2
+# edit_1을 전처리 하여 edit_2를 형성
+# edit_2를 수작업하여 새롭게 크롤링을 돌린 후 기존의 edit_1과 합치한 edit_3를 만드는 과정
+
 # 1. number 변수에 값이 nan 일 경우 해당 행을 엑셀에서 제거하여 새로운 dataframe 으로 생성
 # 2. type_capacity10에 값이 있을 경우 해당 행을 엑셀에서 제거하여 새로운 dataframe 에 추가
 # 3. 전처리 대상들은 edit_2라는 이름으로 저장
@@ -186,7 +189,7 @@ def get_capacity_info():
 
 # 함수선언 6: 크롤링한 data DataFrame 에 append 하기
 
-def appending_to_df():
+def append_to_df2():
     df_Gu2['Apt_name'] = apt_name
     df_Gu2['number'] = number
     df_Gu2['floor'] = floor
@@ -325,15 +328,32 @@ df_Gu = pd.read_excel('Gangbuk_edit1/Eunpyeonggu_edit1.xlsx', sheet_name='edit1'
 ########################################################################################################################
 # 전처리 대상 값들을 새로운 데이터프레임으로 지정하기
 
-# 데이터 프레임에서 number 컬럼에 값이 nan 인 경우 해당 row 를 새로운 dataframe 에 저장
+# 전처리 1단계, 데이터 프레임에서 number 컬럼에 값이 nan 인 경우 해당 row 를 새로운 dataframe 에 저장
 df_Gu2 = df_Gu[df_Gu['number'].isnull()]
-# 데이터 프레임에서 type_capacity10 열이 nan 값이 아닌 경우를 추출
+
+# 전처리 2단계, 데이터 프레임에서 type_capacity10 열이 nan 값이 아닌 경우를 추출
 df = df_Gu.loc[df_Gu['type_capacity10'].str.contains('㎡', na=False)]
-# 다시 크롤링을 돌려야하는 파일을 df_Gu3 으로 저장
+
+# 다시 크롤링을 돌려야하는 파일을 df_Gu2 으로 저장
 df_Gu2 = pd.concat([df_Gu2, df])
 
-# 전처리 대상 엑셀파일을 edit3로 저장, 개별 수정
+# 전처리 대상 엑셀파일을 edit2로 저장, 개별 수정
 df_Gu2.to_excel('Gangbuk_edit2/Eunpyeonggu_edit2.xlsx', sheet_name='edit2', index=True)
+########################################################################################################################
+# 전처리 대상이 아닌 값들을 따로 보관해두기
+
+# 기존 데이터 프레임에서 nan 값이 있는 행 제거 ('전처리 1단계' 에서 걸러진 데이터들 보전)
+df_Gu = df_Gu.dropna(subset=['number'])
+
+# 기존 데이터 프레임에서 type capacity10 가 nan 값인 행 추출 ('전처리 2단계' 에서 걸러진 데이터들 보전)
+df_Gu = df_Gu[df_Gu['type_capacity10'].isnull()]
+
+# 이제 수정된 df_Gu2에 대해서 크롤링을 다시 한 뒤, 해당 df_Gu 값을 합쳐줘야 함
+########################################################################################################################
+'''
+개별 수정 단계 : 네이버 부동산에서 input value 로 인식하지 못하는 Apt 이름과 
+면적별 유형이 10개가 넘어가는 아파트들에 대한 정리 
+'''
 
 # 수정된 엑셀파일 다시 불러오고, sorting 다시 하기
 df_Gu2 = pd.read_excel('Gangbuk_edit2/Eunpyeonggu_edit2.xlsx', sheet_name='edit2', header=0, skipfooter=0,
@@ -343,14 +363,6 @@ df_name = df_Gu2[['읍면동', '아파트']]  # 여러 열을 추출하고 싶�
 
 df_name = df_name.astype('str')
 se_name = df_name['읍면동'] + " " + df_name['아파트']
-########################################################################################################################
-# 전처리 대상이 아닌 값들을 따로 보관해두기
-
-# 기존 데이터 프레임에서 nan 값이 있는 행 제거
-df_Gu = df_Gu.dropna(subset=['number'])
-
-# 기존 데이터 프레임에서 type capacity10 가 nan 값인 행 추출
-df_Gu = df_Gu[df_Gu['type_capacity10'].isnull()]  # 이제 수정된 df_Gu2에 대해서 크롤링을 다시 한 뒤, 해당 df_Gu 값을 합쳐줘야 함
 ########################################################################################################################
 # 크롤링 정보를 담을 리스트 선언
 
@@ -586,7 +598,7 @@ print("Procedure finished at: " + str(time_end))
 print("Elapsed (in this Procedure): " + str(time_end - time_start))
 
 # 엑셀에 append 시키기
-appending_to_df()
+append_to_df2()
 
 # 스크래핑 종료
 ########################################################################################################################
@@ -618,6 +630,8 @@ print('code: ', len(code))
 #############################################################
 
 # 전처리 후 새롭게 크롤링을 돌린 값과 기존의 값을 하나의 dataframe 으로 합쳐주기
+# df_Gu : 전처리 후 보전된 데이터
+# df_Gu2 : 전처리 과정에서 새롭게 정제된 데이터
 df_Gu3 = pd.concat([df_Gu2, df_Gu])
 
 # 결과값 엑셀로 내보내기
