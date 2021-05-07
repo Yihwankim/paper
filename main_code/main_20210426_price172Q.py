@@ -3,11 +3,11 @@ import pickle
 import pandas as pd
 import datetime
 
-data04 = pd.read_pickle('data_raw/df_dataset_201704.pkl')
+data04 = pd.read_pickle('data_processed/df_dataset_201704.pkl')
 
-data05 = pd.read_pickle('data_raw/df_dataset_201705.pkl')
+data05 = pd.read_pickle('data_processed/df_dataset_201705.pkl')
 
-data06 = pd.read_pickle('data_raw/df_dataset_201706.pkl')
+data06 = pd.read_pickle('data_processed/df_dataset_201706.pkl')
 
 
 ####################################################################################################

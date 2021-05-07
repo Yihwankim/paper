@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-
+import lxml
 
 # 국토교통부_아파트매매 실거래 상세 자료
 # 활용기간 2023.04.12 까지
@@ -109,7 +109,7 @@ print("Elapsed (in this code): " + str(time_this_code_end - time_this_code_start
 ########################################################################################################################
 # check the data
 
-data1 = pd.read_pickle('data_raw/df_dataset_202001.pkl')
+data1 = pd.read_pickle('data_processed/df_dataset_201701.pkl')
 
 # data2 = pd.read_pickle('data_raw/df_dataset_202008.pkl')
 
