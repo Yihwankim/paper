@@ -1,4 +1,5 @@
-# 2021-04-26
+# 2021-05-07
+# Chapter 1
 # input data 를 활용하여 네이버 부동산 크롤링 하기
 
 # 2021-04-05
@@ -188,7 +189,7 @@ def get_capacity_info():
 
 # 함수선언 6: 크롤링한 data DataFrame 에 append 하기
 
-def appending_to_df():
+def append_to_df():
     df_Gu['Apt_name'] = apt_name
     df_Gu['number'] = number
     df_Gu['floor'] = floor
@@ -477,7 +478,7 @@ print("Procedure finished at: " + str(time_end))
 print("Elapsed (in this Procedure): " + str(time_end - time_start))
 
 # 엑셀에 append 시키기
-appending_to_df()
+append_to_df()
 
 # 스크래핑 종료
 ########################################################################################################################
@@ -556,7 +557,7 @@ print('toilet10: ', len(toilet10))
 print('structure10: ', len(structure10))
 print('n_this_area10: ', len(n_this_area10))
 
-#############################################################
+#######################################################################################################################
 # apt_name 의 length 가 맞지 않아 데이터프레임이 합쳐지지 않을 경우.
 # apt_name 일치 안할 경우, 해당 항목을 drop 시켜야 한다.
 # 확인하기 위한 코드
@@ -566,9 +567,7 @@ print('n_this_area10: ', len(n_this_area10))
 # df_check
 # print(apt_name[?])
 # apt_name.pop(?)
-#############################################################
-
-# 해당 전처리는 주피터 노트북에서 처리하도록 하자.
+#######################################################################################################################
 
 # 결과값 엑셀로 내보내기
 df_Gu.to_excel('Gangbuk_edit1/Eunpyeonggu_edit1.xlsx', sheet_name='edit1', index=False)
