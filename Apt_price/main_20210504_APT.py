@@ -55,8 +55,8 @@ serviceKey_HKim = "L2bxTcSSMqCj6TrXC3gwMUrZ6N34nwOC9RkkqQiW0ZlxY2MhEaeqpgEcyj8nN
 serviceKey_YKim = "%2F2a7hudNIqdsS1Uq7SaicUQYvpno8zZ4M53iUr4PgZnXIDq4SMhbDLNHrk6PfFXNdnb7LuNpEffhq8YXRq2dbQ%3D%3D"
 serviceKey_ELee = "qsGZz9dk4cJcJQl49SOrzReTZlntOB%2FxGF1aXfwPUeyr1HOhvWaKySoBN1sqiKX3gPavncLjqKGAAkI4ErVsGg%3D%3D"
 serviceKey_JKim = "%2B8oYQ2dI4wTSizbFCnqyo3ssuRB%2Fl%2BIrzomjcEwJq4csP9z%2F%2ByjUJZkqjOiz8HOXQyGII6edaXCxIq7v5%2FvUhw%3D%3D"
-serviceKey_Chun = "2ix6etGjWbVvOzBAIKHx7H6%2FAPHUZPbYUJM%2FUiVE8kqSUPIEEJp%2BhH9RBil1kfrFYeQSfJzfLDKR50JL0TKaGg%3D%3D"
-df_tmp1 = get_apt_data(LAWD_CD=11110, DEAL_YMD=202102, serviceKey=serviceKey_Chun)
+serviceKey_Chun = "2ix6etGjWbVvOzBAIKHx7H6/APHUZPbYUJM/UiVE8kqSUPIEEJp+hH9RBil1kfrFYeQSfJzfLDKR50JL0TKaGg=="
+df_tmp1 = get_apt_data(LAWD_CD=11110, DEAL_YMD=202102, serviceKey=serviceKey_YKim)
 
 
 ########################################################################################################################
@@ -74,8 +74,8 @@ tmp_lawd_cd = df_lawd_cd_nodup_exist["LAWD_CD"][3:10]
 # 그런데 2006년으로 입력해도 자료가 있다.
 
 # 시작 시점과 종료 시점 입력
-yyyymm_start = 202007  # 시작 년월
-yyyymm_end = 202009  # 종료 년월
+yyyymm_start = 202001  # 시작 년월
+yyyymm_end = 202003  # 종료 년월
 
 list_yyyymm = []
 for n_yyyymm in range(yyyymm_start, yyyymm_end+1):
@@ -90,13 +90,13 @@ time_this_code_start = datetime.now()
 print("This code started at: " + str(time_this_code_start))
 
 # DataFrame 구성을 위해 공백 자료를 하나 만든다.
-df_dataset_null = get_apt_data(LAWD_CD=11120, DEAL_YMD=202102, serviceKey=serviceKey_Chun)
+df_dataset_null = get_apt_data(LAWD_CD=11120, DEAL_YMD=202102, serviceKey=serviceKey_YKim)
 
 # 전국의 한달 자료 받는데 약 9분 소요
 for yyyymm in list_yyyymm:
     df_dataset = df_dataset_null.copy()
     for lawd_cd in total_lawd_cd:
-        df_apt = get_apt_data(LAWD_CD=lawd_cd, DEAL_YMD=yyyymm, serviceKey=serviceKey_Chun)
+        df_apt = get_apt_data(LAWD_CD=lawd_cd, DEAL_YMD=yyyymm, serviceKey=serviceKey_YKim)
         # df_apt.to_pickle("./data_raw/df_apt_" + str(yyyymm) + "_" + str(lawd_cd) + ".pkl")
         df_dataset = pd.concat([df_dataset, df_apt])
     df_dataset.to_pickle("./data_raw/df_dataset_" + str(yyyymm) + ".pkl")
@@ -109,7 +109,7 @@ print("Elapsed (in this code): " + str(time_this_code_end - time_this_code_start
 ########################################################################################################################
 # check the data
 
-# data1 = pd.read_pickle('data_raw/df_dataset_201708.pkl')
+data1 = pd.read_pickle('data_raw/df_dataset_202001.pkl')
 
 # data2 = pd.read_pickle('data_raw/df_dataset_202008.pkl')
 
