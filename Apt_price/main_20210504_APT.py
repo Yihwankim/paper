@@ -74,8 +74,8 @@ tmp_lawd_cd = df_lawd_cd_nodup_exist["LAWD_CD"][3:10]
 # 그런데 2006년으로 입력해도 자료가 있다.
 
 # 시작 시점과 종료 시점 입력
-yyyymm_start = 201701  # 시작 년월
-yyyymm_end = 201703  # 종료 년월
+yyyymm_start = 201907  # 시작 년월
+yyyymm_end = 201909  # 종료 년월
 
 list_yyyymm = []
 for n_yyyymm in range(yyyymm_start, yyyymm_end+1):
