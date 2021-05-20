@@ -1,0 +1,503 @@
+# 2021-05-20
+# 해당 코드의 목적은 작업의 효율성과 가독성을 높이기 위함입니다.
+# Chapter 1: crawling
+# 목적 : input data 를 활용하여 네이버 부동산 크롤링 하기
+
+# import packages
+from selenium import webdriver
+import time
+import openpyxl
+from bs4 import BeautifulSoup
+import pandas as pd
+from selenium.webdriver.common.keys import Keys
+import numpy as np
+from urllib.parse import urlparse  # 출처: https://datamasters.co.kr/67 [데이터마스터]
+from datetime import datetime  # 코드 내에 타이머를 사용하면 여러모로 편리합니다.
+
+
+########################################################################################################################
+# 함수 선언
+
+# 함수 1) 단지정보 호출
+def get_apt_info():
+    apt_name_selector = "#complexTitle"
+    apt_name.append(chrome.find_element_by_css_selector(apt_name_selector).text)
+    number_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(1) > td:nth-child(2)"
+    number.append(chrome.find_element_by_css_selector(number_selector).text)
+    floor_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(1) > td:nth-child(4)"
+    floor.append(chrome.find_element_by_css_selector(floor_selector).text)
+    confirm_date_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > " \
+                            "td:nth-child(2) "
+    confirm_date.append(chrome.find_element_by_css_selector(confirm_date_selector).text)
+    car_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > td:nth-child(4)"
+    car.append(chrome.find_element_by_css_selector(car_selector).text)
+    FAR_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(3) > td:nth-child(2)"
+    FAR.append(chrome.find_element_by_css_selector(FAR_selector).text)
+    BC_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(3) > td:nth-child(4)"
+    BC.append(chrome.find_element_by_css_selector(BC_selector).text)
+    con_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(4) > td"
+    con.append(chrome.find_element_by_css_selector(con_selector).text)
+    heat_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(5) > td"
+    heat.append(chrome.find_element_by_css_selector(heat_selector).text)
+
+
+'''
+네이버 부동산을 통해 얻을 수 있는 단지정보의 종류는 
+'아파트 이름', '세대수', '저층 / 고층', '입주승인일', 
+'주차대수 (총, 세대당)', 'FAR', 'BC', '건설사', '난방방식' 등이다.
+'''
+
+
+# 함수 2) url 정보 추출
+def get_url_info():
+    current_url = chrome.current_url  # url 확인
+    df_url = pd.DataFrame([urlparse(current_url)])
+
+    path = df_url.loc[0]['path']
+    code.append(path.split('/')[2])  # code 에 '아파트코드' 담기
+
+    query = df_url.loc[0]['query']
+    check = query.split('=')[1]
+    lat.append(check.split(',')[0])
+    long.append(check.split(',')[1])  # lat, long에 각각 위도와 경도 담기
+
+
+'''
+각 아파트의 url 을 통해서 얻을 수 있는 정보는
+해당 아파트의 '아파트 코드' 와 '위도', '경도' 이다.  
+'''
+
+
+# 함수 3) nan 값 입력
+def input_nan_if_null():
+    apt_name.append(np.nan)
+    number.append(np.nan)
+    floor.append(np.nan)
+    confirm_date.append(np.nan)
+    car.append(np.nan)
+    FAR.append(np.nan)
+    BC.append(np.nan)
+    con.append(np.nan)
+    heat.append(np.nan)
+    code.append(np.nan)
+    lat.append(np.nan)
+    long.append(np.nan)
+
+
+'''
+함수 3의 목적은 input data 를 입력했을때
+다음과 같은 이유로 확인되지 않는 아파트의 정보를
+nan 값으로 처리하여, 다음단계로 넘어가도록 하기 위함이다.
+
+오류의 원인
+1. 한자어 포함, 2. 유사한 이름의 아파트 종류가 여러개 있을 경우 etc
+'''
+
+
+# 함수 4) 면적 유형별 정보 추출
+def input_value_in_vars(type_capacity, area, room, toilet, n_this_area, structure, i):
+    try:
+        if i == 0:
+            type_capacity_selector = "#tab0 > span"
+            type_capacity.append(chrome.find_element_by_css_selector(type_capacity_selector).text)
+
+            area_selector = "#tabpanel > table > tbody > tr:nth-child(1) > td"
+            area.append(chrome.find_element_by_css_selector(area_selector).text)
+
+            rt_selector = "#tabpanel > table > tbody > tr:nth-child(2) > td"  # 방 개수와 화장실 개수
+            rt = chrome.find_element_by_css_selector(rt_selector).text
+            room.append(rt.split('/')[0])
+            toilet.append(rt.split('/')[1])
+
+            n_this_area_selector = "#tabpanel > table > tbody > tr:nth-child(3) > td"
+            n_this_area.append(chrome.find_element_by_css_selector(n_this_area_selector).text)
+
+            structure_selector = "#tabpanel > table > tbody > tr:nth-child(4) > td"
+            structure.append(chrome.find_element_by_css_selector(structure_selector).text)
+
+            time.sleep(2)
+
+        elif i == 7:
+            down_scroll = "#detailContents1 > div.detail_box--floor_plan > div.detail_sorting_tabs > div > " \
+                          "div.btn_moretab_box > button "
+            chrome.find_element_by_css_selector(down_scroll).click()
+            time.sleep(1)
+
+            n = str(i)
+            num_capacity = "#tab" + n + "> span"
+            chrome.find_element_by_css_selector(num_capacity).click()
+
+            type_capacity.append(chrome.find_element_by_css_selector(num_capacity).text)
+
+            area_selector = "#tabpanel > table > tbody > tr:nth-child(1) > td"
+            area.append(chrome.find_element_by_css_selector(area_selector).text)
+
+            rt_selector = "#tabpanel > table > tbody > tr:nth-child(2) > td"  # 방 개수와 화장실 개수
+            rt = chrome.find_element_by_css_selector(rt_selector).text
+            room.append(rt.split('/')[0])
+            toilet.append(rt.split('/')[1])
+
+            n_this_area_selector = "#tabpanel > table > tbody > tr:nth-child(3) > td"
+            n_this_area.append(chrome.find_element_by_css_selector(n_this_area_selector).text)
+
+            structure_selector = "#tabpanel > table > tbody > tr:nth-child(4) > td"
+            structure.append(chrome.find_element_by_css_selector(structure_selector).text)
+
+            time.sleep(2)
+
+
+        else:
+            n = str(i)
+            num_capacity = "#tab" + n + "> span"
+            chrome.find_element_by_css_selector(num_capacity).click()
+
+            type_capacity.append(chrome.find_element_by_css_selector(num_capacity).text)
+
+            area_selector = "#tabpanel > table > tbody > tr:nth-child(1) > td"
+            area.append(chrome.find_element_by_css_selector(area_selector).text)
+
+            rt_selector = "#tabpanel > table > tbody > tr:nth-child(2) > td"  # 방 개수와 화장실 개수
+            rt = chrome.find_element_by_css_selector(rt_selector).text
+            room.append(rt.split('/')[0])
+            toilet.append(rt.split('/')[1])
+
+            n_this_area_selector = "#tabpanel > table > tbody > tr:nth-child(3) > td"
+            n_this_area.append(chrome.find_element_by_css_selector(n_this_area_selector).text)
+
+            structure_selector = "#tabpanel > table > tbody > tr:nth-child(4) > td"
+            structure.append(chrome.find_element_by_css_selector(structure_selector).text)
+
+            time.sleep(2)
+
+    except Exception as ex:
+        type_capacity.append(np.nan)
+        area.append(np.nan)
+        room.append(np.nan)
+        toilet.append(np.nan)
+        n_this_area.append(np.nan)
+        structure.append(np.nan)
+        time.sleep(1)
+
+
+'''
+함수 4의 목적은 각 면적 유형별 정보를 포착해내기 위함이다.
+우선 면적 유형별로 확인할 수 있는 정보는 
+'면적 유형의 이름', '공급면적/ 전용면적', '방 개수', '화장실 개수', '해당 면적 세대수', '구조' 이며
+
+각 면적 유형에 해당하는 버튼을 클릭해야 해당 면적에 대한 정보를 확인할 수 있으므로 
+함수 상에 클릭 기능을 추가하였다. 특히 7번째 면적 이후에는 화살표 버튼을 클릭해야
+8번째 면적 유형에 대한 정보를 확인할 수 있으므로, 화살표를 누르는 기능 또한 함수에 추가하였다.
+
+1차적인 목표는 각 아파트 단지별로 10개의 면적유형 정보를 확보하는 것인데, 
+단지의 면적 유형이 10개 미만인 아파트 또한 많기 때문에 다음으로 넘어가기 위한 목적으로
+try-except 구문을 사용하여 예외처리를 진행하였다. 
+'''
+
+
+# 함수 5) 면적유형별 정보를 1~10 리스트에 append 하기
+def get_capacity_info():
+    input_value_in_vars(type_capacity1, area1, room1, toilet1, n_this_area1, structure1, i=0)
+    input_value_in_vars(type_capacity2, area2, room2, toilet2, n_this_area2, structure2, i=1)
+    input_value_in_vars(type_capacity3, area3, room3, toilet3, n_this_area3, structure3, i=2)
+    input_value_in_vars(type_capacity4, area4, room4, toilet4, n_this_area4, structure4, i=3)
+    input_value_in_vars(type_capacity5, area5, room5, toilet5, n_this_area5, structure5, i=4)
+    input_value_in_vars(type_capacity6, area6, room6, toilet6, n_this_area6, structure6, i=5)
+    input_value_in_vars(type_capacity7, area7, room7, toilet7, n_this_area7, structure7, i=6)
+    input_value_in_vars(type_capacity8, area8, room8, toilet8, n_this_area8, structure8, i=7)
+    input_value_in_vars(type_capacity9, area9, room9, toilet9, n_this_area9, structure9, i=8)
+    input_value_in_vars(type_capacity10, area10, room10, toilet10, n_this_area10, structure10, i=9)
+
+
+'''
+함수 5의 목적은 단지별 10개의 면적 유형 정보를 확보하는 것이다.
+직관적인 이해를 위해 함수 4를 10개 늘려붙이는 방식으로 함수를 새로 만들었다.
+'''
+
+
+# 함수 6) 크롤링한 data DataFrame 에 append 하기
+
+def append_to_df():
+    df_Gu['Apt_name'] = apt_name
+    df_Gu['number'] = number
+    df_Gu['floor'] = floor
+    df_Gu['confirm_date'] = confirm_date
+    df_Gu['car'] = car
+    df_Gu['FAR'] = FAR
+    df_Gu['BC'] = BC
+    df_Gu['con'] = con
+    df_Gu['heat'] = heat
+    df_Gu['code'] = code
+    df_Gu['lat'] = lat
+    df_Gu['long'] = long
+
+    df_Gu['type_capacity1'] = type_capacity1
+    df_Gu['area1'] = area1
+    df_Gu['room1'] = room1
+    df_Gu['toilet1'] = toilet1
+    df_Gu['structure1'] = structure1
+    df_Gu['n_this_area1'] = n_this_area1
+
+    df_Gu['type_capacity2'] = type_capacity2
+    df_Gu['area2'] = area2
+    df_Gu['room2'] = room2
+    df_Gu['toilet2'] = toilet2
+    df_Gu['structure2'] = structure2
+    df_Gu['n_this_area2'] = n_this_area2
+
+    df_Gu['type_capacity3'] = type_capacity3
+    df_Gu['area3'] = area3
+    df_Gu['room3'] = room3
+    df_Gu['toilet3'] = toilet3
+    df_Gu['structure3'] = structure3
+    df_Gu['n_this_area3'] = n_this_area3
+
+    df_Gu['type_capacity4'] = type_capacity4
+    df_Gu['area4'] = area4
+    df_Gu['room4'] = room4
+    df_Gu['toilet4'] = toilet4
+    df_Gu['structure4'] = structure4
+    df_Gu['n_this_area4'] = n_this_area4
+
+    df_Gu['type_capacity5'] = type_capacity5
+    df_Gu['area5'] = area5
+    df_Gu['room5'] = room5
+    df_Gu['toilet5'] = toilet5
+    df_Gu['structure5'] = structure5
+    df_Gu['n_this_area5'] = n_this_area5
+
+    df_Gu['type_capacity6'] = type_capacity6
+    df_Gu['area6'] = area6
+    df_Gu['room6'] = room6
+    df_Gu['toilet6'] = toilet6
+    df_Gu['structure6'] = structure6
+    df_Gu['n_this_area6'] = n_this_area6
+
+    df_Gu['type_capacity7'] = type_capacity7
+    df_Gu['area7'] = area7
+    df_Gu['room7'] = room7
+    df_Gu['toilet7'] = toilet7
+    df_Gu['structure7'] = structure7
+    df_Gu['n_this_area7'] = n_this_area7
+
+    df_Gu['type_capacity8'] = type_capacity8
+    df_Gu['area8'] = area8
+    df_Gu['room8'] = room8
+    df_Gu['toilet8'] = toilet8
+    df_Gu['structure8'] = structure8
+    df_Gu['n_this_area8'] = n_this_area8
+
+    df_Gu['type_capacity9'] = type_capacity9
+    df_Gu['area9'] = area9
+    df_Gu['room9'] = room9
+    df_Gu['toilet9'] = toilet9
+    df_Gu['structure9'] = structure9
+    df_Gu['n_this_area9'] = n_this_area9
+
+    df_Gu['type_capacity10'] = type_capacity10
+    df_Gu['area10'] = area10
+    df_Gu['room10'] = room10
+    df_Gu['toilet10'] = toilet10
+    df_Gu['structure10'] = structure10
+    df_Gu['n_this_area10'] = n_this_area10
+
+
+'''
+함수 6의 경우 사전에 선언된 리스트들을 데이터프레임에 편입시키는 것을 목적으로 한다.
+'''
+
+# 리스트 선언
+
+# 리스트 타입 1) 단지 정보
+apt_name = []  # 아파트 이름; input 과 output 이 제대로 일치하는지 확인하기 위함
+number = []  # 세대수
+floor = []  # 저/최고층
+confirm_date = []  # 사용승인일
+car = []  # 주차대수
+FAR = []  # 용적률 (Floor Area Ratio)
+BC = []  # 건폐율 (Building Coverage)
+con = []  # 건설사
+heat = []  # 난방 / 난방방식
+lat = []  # 위도
+long = []  # 경도
+code = []  # 아파트 코드
+
+# 리스트 타입 2) 면적 유형별 정보
+type_capacity1 = []  # 면적 유형의 이름 ex) 86A㎡
+area1 = []  # 면적 : 공급/전용(전용률)
+room1 = []  # 방 갯수
+toilet1 = []  # 화장실 개수
+structure1 = []  # 현관구조
+n_this_area1 = []  # 해당면적 세대수
+
+type_capacity2 = []
+area2 = []
+room2 = []
+toilet2 = []
+structure2 = []
+n_this_area2 = []
+
+type_capacity3 = []
+area3 = []
+room3 = []
+toilet3 = []
+structure3 = []
+n_this_area3 = []
+
+type_capacity4 = []
+area4 = []
+room4 = []
+toilet4 = []
+structure4 = []
+n_this_area4 = []
+
+type_capacity5 = []
+area5 = []
+room5 = []
+toilet5 = []
+structure5 = []
+n_this_area5 = []
+
+type_capacity6 = []
+area6 = []
+room6 = []
+toilet6 = []
+structure6 = []
+n_this_area6 = []
+
+type_capacity7 = []
+area7 = []
+room7 = []
+toilet7 = []
+structure7 = []
+n_this_area7 = []
+
+type_capacity8 = []
+area8 = []
+room8 = []
+toilet8 = []
+structure8 = []
+n_this_area8 = []
+
+type_capacity9 = []
+area9 = []
+room9 = []
+toilet9 = []
+structure9 = []
+n_this_area9 = []
+
+type_capacity10 = []
+area10 = []
+room10 = []
+toilet10 = []
+structure10 = []
+n_this_area10 = []
+
+########################################################################################################################
+# 코드 실행
+
+df_Gu = pd.read_excel('Gangbuk/Eunpyeonggu.xlsx', sheet_name=None, header=0, skipfooter=0,
+                      usecols='C:D, G:H')  # 구별 엑셀 파일은 각 시트가 동별 정보로 이루어져있어 출력시 dictionary 로 출력
+df_Gu = pd.concat(df_Gu, ignore_index='Ture')  # dict 을 하나의 dataframe 으로 합치기
+
+df_Gu = df_Gu.drop_duplicates(['아파트'], keep='first')  # 엑셀 파일은 면적 유형별로 정리가 되어있어 아파트 이름에 중복이 있다.
+df_Gu = df_Gu.sort_values(by=['아파트'])  # 중복을 제거하고, 아파트 이름을 인덱스로 하여 내림차순 정리
+df_Gu = df_Gu.reset_index(drop='Ture')  # 뒤죽박죽된 행 인덱스를 재설정
+
+df_name = df_Gu[['읍면동', '아파트']]  # input_data 만들기 : 여러 열을 추출하고 싶을때는 [[ 두개를 사용 ]]
+df_name = df_name.astype('str')  # input_data 가 문자열로 되어있는지 재확인
+se_name = df_name['읍면동'] + " " + df_name['아파트']  # 하나의 시리즈로 만듦으로써 최종 input_value 로 사용준비완료
+
+# 스크래핑 시작
+
+time_start = datetime.now()  # StopWatch: 코드 시작
+print("Procedure started at: " + str(time_start))
+
+apt_len = len(se_name)  # 단지명 리스트의 길이.
+chrome = webdriver.Chrome('chromedriver.exe')
+
+for i in range(apt_len):
+    apt = se_name[i]
+
+    try:
+        if i == 0:
+            chrome.get('https://land.naver.com/')  # 네이버 부동산 실행
+            time.sleep(1)
+            input_engine = chrome.find_element_by_css_selector('#queryInputHeader')
+            input_engine.clear()
+            input_engine.send_keys(apt)  # apt 이름을 입력하고, enter 키를 누르기 전 상태
+            input_engine.send_keys(Keys.ENTER)  # 특정키(enter) 를 입력
+            link = chrome.find_element_by_css_selector(
+                '#summaryInfo > div.complex_summary_info > div.complex_detail_link > button:nth-child(1)')
+            link.click()  # '단지정보' 클릭
+
+            time.sleep(1)
+
+            get_apt_info()  # 함수 1 사용
+            get_url_info()  # 함수 2 사용
+            get_capacity_info()  # 함수 5 사용
+
+            chrome.find_element_by_css_selector('#search_input').clear  # 검색창 초기화
+
+            time.sleep(1)  # 오류 방지를 위해 1초의 time sleep 추가
+
+        else:  # i=0 일때와 i>0 일때 화면이 다름
+            search = chrome.find_element_by_css_selector('#search_input')
+            search.clear()
+            search.send_keys(apt)
+            search.send_keys(Keys.ENTER)
+            time.sleep(4)
+            link = chrome.find_element_by_css_selector(
+                '#summaryInfo > div.complex_summary_info > div.complex_detail_link > button:nth-child(1)')
+            link.click()
+            time.sleep(4)
+
+            get_apt_info()
+            get_url_info()
+            get_capacity_info()
+
+            chrome.find_element_by_css_selector('#search_input').clear  # 검색창 초기화
+
+
+    except:  # 검색 시 여러개의 창이 뜨는 오류를 처리
+        try:
+            search.clear()
+            choice = chrome.find_element_by_css_selector(
+                '#ct > div.map_wrap > div.search_panel > div.list_contents > div > div > div:nth-child(2) > div > a')
+            choice.click()
+            link = chrome.find_element_by_css_selector(
+                '#summaryInfo > div.complex_summary_info > div.complex_detail_link > button:nth-child(1)')
+            link.click()
+
+            time.sleep(3)
+
+            get_apt_info()
+            get_url_info()
+            get_capacity_info()
+
+
+        except Exception as ex:
+            research = chrome.find_element_by_css_selector('#search_input')
+            research.clear()
+
+            input_nan_if_null()  # 원하는 정보를 얻지 못했으므로 전체 nan 값 출력, 함수 3 사용
+            get_capacity_info()  # 입력값에 해당하는 정보가 없는 상황에서 자동으로 nan 값 출력
+
+            chrome.back()
+
+            try:
+                time.sleep(3)
+                input_engine = chrome.find_element_by_css_selector('#queryInputHeader')
+                input_engine.send_keys(Keys.ENTER)
+            except:
+                search = chrome.find_element_by_css_selector('#search_input')
+                search.send_keys(Keys.ENTER)
+
+# StopWatch: 코드 종료
+time_end = datetime.now()
+print("Procedure finished at: " + str(time_end))
+print("Elapsed (in this Procedure): " + str(time_end - time_start))
+
+# 엑셀에 append 시키기
+append_to_df()
+
+# 스크래핑 종료
