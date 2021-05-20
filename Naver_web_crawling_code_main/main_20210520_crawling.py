@@ -305,6 +305,88 @@ def append_to_df():
 함수 6의 경우 사전에 선언된 리스트들을 데이터프레임에 편입시키는 것을 목적으로 한다.
 '''
 
+
+def check_length():
+    print('apt_name: ', len(apt_name))
+    print('number: ', len(number))
+    print('floor: ', len(floor))
+    print('confirm_date: ', len(confirm_date))
+    print('car: ', len(car))
+    print('FAR: ', len(FAR))
+    print('BC: ', len(BC))
+    print('con: ', len(con))
+    print('heat: ', len(heat))
+    print('lat: ', len(lat))
+    print('long: ', len(long))
+    print('code: ', len(code))
+    print('type_capacity1: ', len(type_capacity1))
+    print('area1: ', len(area1))
+    print('room1: ', len(room1))
+    print('toilet1: ', len(toilet1))
+    print('structure1: ', len(structure1))
+    print('n_this_area1: ', len(n_this_area1))
+    print('type_capacity2: ', len(type_capacity2))
+    print('area2: ', len(area2))
+    print('room2: ', len(room2))
+    print('toilet2: ', len(toilet2))
+    print('structure2: ', len(structure2))
+    print('n_this_area2: ', len(n_this_area2))
+    print('type_capacity3: ', len(type_capacity3))
+    print('area3: ', len(area3))
+    print('room3: ', len(room3))
+    print('toilet3: ', len(toilet3))
+    print('structure3: ', len(structure3))
+    print('n_this_area3: ', len(n_this_area3))
+    print('type_capacity4: ', len(type_capacity4))
+    print('area4: ', len(area4))
+    print('room4: ', len(room4))
+    print('toilet4: ', len(toilet4))
+    print('structure4: ', len(structure4))
+    print('n_this_area4: ', len(n_this_area4))
+    print('type_capacity5: ', len(type_capacity5))
+    print('area5: ', len(area5))
+    print('room5: ', len(room5))
+    print('toilet5: ', len(toilet5))
+    print('structure5: ', len(structure5))
+    print('n_this_area5: ', len(n_this_area5))
+    print('type_capacity6: ', len(type_capacity6))
+    print('area6: ', len(area6))
+    print('room6: ', len(room6))
+    print('toilet6: ', len(toilet6))
+    print('structure6: ', len(structure6))
+    print('n_this_area6: ', len(n_this_area6))
+    print('type_capacity7: ', len(type_capacity7))
+    print('area7: ', len(area7))
+    print('room7: ', len(room7))
+    print('toilet7: ', len(toilet7))
+    print('structure7: ', len(structure7))
+    print('n_this_area7: ', len(n_this_area7))
+    print('type_capacity8: ', len(type_capacity8))
+    print('area8: ', len(area8))
+    print('room8: ', len(room8))
+    print('toilet8: ', len(toilet8))
+    print('structure8: ', len(structure8))
+    print('n_this_area8: ', len(n_this_area8))
+    print('type_capacity9: ', len(type_capacity9))
+    print('area9: ', len(area9))
+    print('room9: ', len(room9))
+    print('toilet9: ', len(toilet9))
+    print('structure9: ', len(structure9))
+    print('n_this_area9: ', len(n_this_area9))
+    print('type_capacity10: ', len(type_capacity10))
+    print('area10: ', len(area10))
+    print('room10: ', len(room10))
+    print('toilet10: ', len(toilet10))
+    print('structure10: ', len(structure10))
+    print('n_this_area10: ', len(n_this_area10))
+
+'''
+간혹 Apt name 리스트에서 다른 항목의 길이와 length 가 다른 문제가 발생한다.
+만약 append 가 제대로 이뤄지지 않을 경우, 문제가 되는 항목을 찾아야하므로 해당 함수를 통해
+어떤 리스트의 길이가 다른 리스트와 상응하지 않는지 확인할 필요가 있다.
+'''
+
+
 # 리스트 선언
 
 # 리스트 타입 1) 단지 정보
@@ -488,16 +570,34 @@ for i in range(apt_len):
                 time.sleep(3)
                 input_engine = chrome.find_element_by_css_selector('#queryInputHeader')
                 input_engine.send_keys(Keys.ENTER)
+
             except:
                 search = chrome.find_element_by_css_selector('#search_input')
                 search.send_keys(Keys.ENTER)
 
-# StopWatch: 코드 종료
-time_end = datetime.now()
+time_end = datetime.now()  # StopWatch: 코드 종료
 print("Procedure finished at: " + str(time_end))
-print("Elapsed (in this Procedure): " + str(time_end - time_start))
+print("Elapsed (in this Procedure): " + str(time_end - time_start))  # 스크래핑 종료
 
-# 엑셀에 append 시키기
-append_to_df()
 
-# 스크래핑 종료
+check_length()  # 함수 7 사용, 각 항목의 length 확인하기
+append_to_df()  # dataframe 에 모든 리스트 append 시키기
+
+
+# 문제가 발생한 부분 처리해주기
+
+# df_apt_name = pd.DataFrame(apt_name)
+# df_check = pd.concat([df_Gu, df_apt_name], axis=1)
+# df_check
+# print(apt_name[?])
+# apt_name.pop(?)
+
+
+'''
+append 가 되지 않는 문제가 발생할 경우
+ex) apt_name 의 length 가 맞지 않아 데이터 프레임이 합쳐지지 않는 상황
+다른 length 와 일치하지 않는 부분이 어디인지 확인하여 drop 시킬 필요가 있다. 
+'''
+
+
+
