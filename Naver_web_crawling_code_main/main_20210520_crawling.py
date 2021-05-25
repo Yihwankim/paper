@@ -599,5 +599,5 @@ ex) apt_name 의 length 가 맞지 않아 데이터 프레임이 합쳐지지 �
 다른 length 와 일치하지 않는 부분이 어디인지 확인하여 drop 시킬 필요가 있다. 
 '''
 
-
+df_Gu.to_excel('Gangbuk_edit1/Eunpyeonggu_edit1.xlsx', sheet_name='edit1', index=False)  # 엑셀로 내보내기
 
