@@ -1,27 +1,10 @@
-# 2021-05-07
-# Chapter 3
-# edit_3로 만든 파일들을 melt 를 활용하여 면적별 정보로 나열
-# 최종적으로 edit_4로 저장하기
-
-# 최종 비교시 고려할 사항
-# 1. 아파트 이름(인덱스)과 읍면동, 아파트 정보가 동일한지 여부
-# 2. 아파트 세대수가 면적별 세대수의 합과 동일한지 여부
-# 3. type of capacity 의 모든 element 가 nan 으로 채워져 있을 경우 오류가 발생하므로 주의
 
 
-# Import packages
-import pandas as pd
-import numpy as np
 
-#############################################################################################################
-# 엑셀 파일 불러오기
-df_data = pd.read_excel('Gangnam_edit3/Gwanakgu_edit3.xlsx')
+# melting
 
-df_Gu = pd.read_excel('Gangnam_edit3/Gwanakgu_edit3.xlsx', usecols='A:P')
+df_data = pd.read_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx', usecols='A:P')
 
-#############################################################################################################
-# 6개의 컬럼으로 나누어진 면적별 정보를 하나의 칼럼으로 합쳐서 시리즈로 저장하기
-# 해당 시리즈는 앞으로 10개 이상의 시리즈로 확장되어야함
 se_type1 = df_data['type_capacity1'].str.cat(df_data[['area1',
                                                       'room1',
                                                       'toilet1',
@@ -124,25 +107,29 @@ se_type17 = df_data['type_capacity17'].str.cat(df_data[['area17',
                                                         'structure17',
                                                         'n_this_area17']], sep=',')
 
-# 오류발생 가능
-# type_capacity_number 의 모든 값이 nan 으로 채워져있을 경우 에러가 발생함
+se_type18 = df_data['type_capacity18'].str.cat(df_data[['area18',
+                                                        'room18',
+                                                        'toilet18',
+                                                        'structure18',
+                                                        'n_this_area18']], sep=',')
 
-# 해당 오류 발생시 밑의 코드를 탄력적으로 수정
-# 원본
+se_type19 = df_data['type_capacity19'].str.cat(df_data[['area19',
+                                                        'room19',
+                                                        'toilet19',
+                                                        'structure19',
+                                                        'n_this_area19']], sep=',')
+
+se_type20 = df_data['type_capacity20'].str.cat(df_data[['area20',
+                                                        'room20',
+                                                        'toilet20',
+                                                        'structure20',
+                                                        'n_this_area20']], sep=',')
+
 df_Gu = pd.concat([df_Gu, se_type1, se_type2, se_type3, se_type4, se_type5, se_type6, se_type7, se_type8,
-                  se_type9, se_type10, se_type11, se_type12, se_type13, se_type14, se_type15, se_type16, se_type17],
+                   se_type9, se_type10, se_type11, se_type12, se_type13, se_type14, se_type15, se_type16, se_type17
+                      , se_type18, se_type19, se_type20],
                   axis=1)
 
-
-#df_Gu = pd.concat([df_Gu, se_type1, se_type2, se_type3, se_type4, se_type5, se_type6, se_type7, se_type8,
-#                   se_type9, se_type10, se_type11, se_type12, se_type13],
-#                  axis=1)  # 만들어 둔 시리즈를 기존의 데이터 프레임에 합치기
-
-#############################################################################################################
-
-# 하나의 컬럼으로 만들어 둔 면적별 정보(type_capacity)에 따라 아파트 기본 정보들을 stack 시키기
-# 에러 처리
-# 원본
 df_edit = df_Gu.melt(id_vars=['읍면동', '아파트', '세대수', '입주년월', 'Apt_name', 'number', 'floor',
                               'confirm_date', 'car', 'FAR', 'BC', 'con', 'heat', 'code', 'lat',
                               'long'], value_vars=['type_capacity1', 'type_capacity2', 'type_capacity3',
@@ -150,18 +137,8 @@ df_edit = df_Gu.melt(id_vars=['읍면동', '아파트', '세대수', '입주년�
                                                    'type_capacity7', 'type_capacity8', 'type_capacity9',
                                                    'type_capacity10', 'type_capacity11', 'type_capacity12',
                                                    'type_capacity13', 'type_capacity14', 'type_capacity15',
-                                                   'type_capacity16', 'type_capacity17'])
-
-# 수정
-#df_edit = df_Gu.melt(id_vars=['읍면동', '아파트', '세대수', '입주년월', 'Apt_name', 'number', 'floor',
-#                              'confirm_date', 'car', 'FAR', 'BC', 'con', 'heat', 'code', 'lat',
-#                              'long'], value_vars=['type_capacity1', 'type_capacity2', 'type_capacity3',
-#                                                   'type_capacity4', 'type_capacity5', 'type_capacity6',
-#                                                   'type_capacity7', 'type_capacity8', 'type_capacity9',
-#                                                   'type_capacity10', 'type_capacity11', 'type_capacity12',
-#                                                   'type_capacity13'])
-
-############################################################################################
+                                                   'type_capacity16', 'type_capacity17', 'type_capacity18',
+                                                   'type_capacity19', 'type_capacity20'])
 
 df_edit = df_edit.sort_values(by='Apt_name')  # 아파트 이름에 따라 행을 정렬
 df_edit2 = df_edit.dropna(axis=0)  # nan 값이 있는 행 제거: 면적이 3개인 아파트의 경우 4~10번째 면적정보는 drop 된다.
@@ -178,7 +155,3 @@ df_edit2['n_this_area'] = type_information.str.get(5)
 
 df_Gu_last = df_edit2.drop(['value', 'variable', '아파트',
                             '세대수', '입주년월'], axis=1)  # 필요없어진 값 제거
-
-df_Gu_last.insert(0, 'Gu', '관악구')  # 이름 확인 주의
-
-df_Gu_last.to_excel('Gangnam_edit4/Gwanakgu_edit3.xlsx', sheet_name='edit4', index=False)  # 이름 확인 주의
