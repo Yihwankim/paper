@@ -227,158 +227,158 @@ def get_capacity_info():
 # 함수 6) 크롤링한 data DataFrame 에 append 하기
 
 def append_to_df():
-    df_Gu['Apt_name'] = apt_name
-    df_Gu['number'] = number
-    df_Gu['floor'] = floor
-    df_Gu['confirm_date'] = confirm_date
-    df_Gu['car'] = car
-    df_Gu['FAR'] = FAR
-    df_Gu['BC'] = BC
-    df_Gu['con'] = con
-    df_Gu['heat'] = heat
-    df_Gu['code'] = code
-    df_Gu['lat'] = lat
-    df_Gu['long'] = long
+    df_code['Apt_name'] = apt_name
+    df_code['number'] = number
+    df_code['floor'] = floor
+    df_code['confirm_date'] = confirm_date
+    df_code['car'] = car
+    df_code['FAR'] = FAR
+    df_code['BC'] = BC
+    df_code['con'] = con
+    df_code['heat'] = heat
+    df_code['code'] = code
+    df_code['lat'] = lat
+    df_code['long'] = long
 
-    df_Gu['type_capacity1'] = type_capacity1
-    df_Gu['area1'] = area1
-    df_Gu['room1'] = room1
-    df_Gu['toilet1'] = toilet1
-    df_Gu['structure1'] = structure1
-    df_Gu['n_this_area1'] = n_this_area1
+    df_code['type_capacity1'] = type_capacity1
+    df_code['area1'] = area1
+    df_code['room1'] = room1
+    df_code['toilet1'] = toilet1
+    df_code['structure1'] = structure1
+    df_code['n_this_area1'] = n_this_area1
 
-    df_Gu['type_capacity2'] = type_capacity2
-    df_Gu['area2'] = area2
-    df_Gu['room2'] = room2
-    df_Gu['toilet2'] = toilet2
-    df_Gu['structure2'] = structure2
-    df_Gu['n_this_area2'] = n_this_area2
+    df_code['type_capacity2'] = type_capacity2
+    df_code['area2'] = area2
+    df_code['room2'] = room2
+    df_code['toilet2'] = toilet2
+    df_code['structure2'] = structure2
+    df_code['n_this_area2'] = n_this_area2
 
-    df_Gu['type_capacity3'] = type_capacity3
-    df_Gu['area3'] = area3
-    df_Gu['room3'] = room3
-    df_Gu['toilet3'] = toilet3
-    df_Gu['structure3'] = structure3
-    df_Gu['n_this_area3'] = n_this_area3
+    df_code['type_capacity3'] = type_capacity3
+    df_code['area3'] = area3
+    df_code['room3'] = room3
+    df_code['toilet3'] = toilet3
+    df_code['structure3'] = structure3
+    df_code['n_this_area3'] = n_this_area3
 
-    df_Gu['type_capacity4'] = type_capacity4
-    df_Gu['area4'] = area4
-    df_Gu['room4'] = room4
-    df_Gu['toilet4'] = toilet4
-    df_Gu['structure4'] = structure4
-    df_Gu['n_this_area4'] = n_this_area4
+    df_code['type_capacity4'] = type_capacity4
+    df_code['area4'] = area4
+    df_code['room4'] = room4
+    df_code['toilet4'] = toilet4
+    df_code['structure4'] = structure4
+    df_code['n_this_area4'] = n_this_area4
 
-    df_Gu['type_capacity5'] = type_capacity5
-    df_Gu['area5'] = area5
-    df_Gu['room5'] = room5
-    df_Gu['toilet5'] = toilet5
-    df_Gu['structure5'] = structure5
-    df_Gu['n_this_area5'] = n_this_area5
+    df_code['type_capacity5'] = type_capacity5
+    df_code['area5'] = area5
+    df_code['room5'] = room5
+    df_code['toilet5'] = toilet5
+    df_code['structure5'] = structure5
+    df_code['n_this_area5'] = n_this_area5
 
-    df_Gu['type_capacity6'] = type_capacity6
-    df_Gu['area6'] = area6
-    df_Gu['room6'] = room6
-    df_Gu['toilet6'] = toilet6
-    df_Gu['structure6'] = structure6
-    df_Gu['n_this_area6'] = n_this_area6
+    df_code['type_capacity6'] = type_capacity6
+    df_code['area6'] = area6
+    df_code['room6'] = room6
+    df_code['toilet6'] = toilet6
+    df_code['structure6'] = structure6
+    df_code['n_this_area6'] = n_this_area6
 
-    df_Gu['type_capacity7'] = type_capacity7
-    df_Gu['area7'] = area7
-    df_Gu['room7'] = room7
-    df_Gu['toilet7'] = toilet7
-    df_Gu['structure7'] = structure7
-    df_Gu['n_this_area7'] = n_this_area7
+    df_code['type_capacity7'] = type_capacity7
+    df_code['area7'] = area7
+    df_code['room7'] = room7
+    df_code['toilet7'] = toilet7
+    df_code['structure7'] = structure7
+    df_code['n_this_area7'] = n_this_area7
 
-    df_Gu['type_capacity8'] = type_capacity8
-    df_Gu['area8'] = area8
-    df_Gu['room8'] = room8
-    df_Gu['toilet8'] = toilet8
-    df_Gu['structure8'] = structure8
-    df_Gu['n_this_area8'] = n_this_area8
+    df_code['type_capacity8'] = type_capacity8
+    df_code['area8'] = area8
+    df_code['room8'] = room8
+    df_code['toilet8'] = toilet8
+    df_code['structure8'] = structure8
+    df_code['n_this_area8'] = n_this_area8
 
-    df_Gu['type_capacity9'] = type_capacity9
-    df_Gu['area9'] = area9
-    df_Gu['room9'] = room9
-    df_Gu['toilet9'] = toilet9
-    df_Gu['structure9'] = structure9
-    df_Gu['n_this_area9'] = n_this_area9
+    df_code['type_capacity9'] = type_capacity9
+    df_code['area9'] = area9
+    df_code['room9'] = room9
+    df_code['toilet9'] = toilet9
+    df_code['structure9'] = structure9
+    df_code['n_this_area9'] = n_this_area9
 
-    df_Gu['type_capacity10'] = type_capacity10
-    df_Gu['area10'] = area10
-    df_Gu['room10'] = room10
-    df_Gu['toilet10'] = toilet10
-    df_Gu['structure10'] = structure10
-    df_Gu['n_this_area10'] = n_this_area10
+    df_code['type_capacity10'] = type_capacity10
+    df_code['area10'] = area10
+    df_code['room10'] = room10
+    df_code['toilet10'] = toilet10
+    df_code['structure10'] = structure10
+    df_code['n_this_area10'] = n_this_area10
 
-    df_Gu['type_capacity11'] = type_capacity11
-    df_Gu['area11'] = area11
-    df_Gu['room11'] = room11
-    df_Gu['toilet11'] = toilet11
-    df_Gu['structure11'] = structure11
-    df_Gu['n_this_area11'] = n_this_area11
+    df_code['type_capacity11'] = type_capacity11
+    df_code['area11'] = area11
+    df_code['room11'] = room11
+    df_code['toilet11'] = toilet11
+    df_code['structure11'] = structure11
+    df_code['n_this_area11'] = n_this_area11
 
-    df_Gu['type_capacity12'] = type_capacity12
-    df_Gu['area12'] = area12
-    df_Gu['room12'] = room12
-    df_Gu['toilet12'] = toilet12
-    df_Gu['structure12'] = structure12
-    df_Gu['n_this_area12'] = n_this_area12
+    df_code['type_capacity12'] = type_capacity12
+    df_code['area12'] = area12
+    df_code['room12'] = room12
+    df_code['toilet12'] = toilet12
+    df_code['structure12'] = structure12
+    df_code['n_this_area12'] = n_this_area12
 
-    df_Gu['type_capacity13'] = type_capacity13
-    df_Gu['area13'] = area13
-    df_Gu['room13'] = room13
-    df_Gu['toilet13'] = toilet13
-    df_Gu['structure13'] = structure13
-    df_Gu['n_this_area13'] = n_this_area13
+    df_code['type_capacity13'] = type_capacity13
+    df_code['area13'] = area13
+    df_code['room13'] = room13
+    df_code['toilet13'] = toilet13
+    df_code['structure13'] = structure13
+    df_code['n_this_area13'] = n_this_area13
 
-    df_Gu['type_capacity14'] = type_capacity14
-    df_Gu['area14'] = area14
-    df_Gu['room14'] = room14
-    df_Gu['toilet14'] = toilet14
-    df_Gu['structure14'] = structure14
-    df_Gu['n_this_area14'] = n_this_area14
+    df_code['type_capacity14'] = type_capacity14
+    df_code['area14'] = area14
+    df_code['room14'] = room14
+    df_code['toilet14'] = toilet14
+    df_code['structure14'] = structure14
+    df_code['n_this_area14'] = n_this_area14
 
-    df_Gu['type_capacity15'] = type_capacity15
-    df_Gu['area15'] = area15
-    df_Gu['room15'] = room15
-    df_Gu['toilet15'] = toilet15
-    df_Gu['structure15'] = structure15
-    df_Gu['n_this_area15'] = n_this_area15
+    df_code['type_capacity15'] = type_capacity15
+    df_code['area15'] = area15
+    df_code['room15'] = room15
+    df_code['toilet15'] = toilet15
+    df_code['structure15'] = structure15
+    df_code['n_this_area15'] = n_this_area15
 
-    df_Gu['type_capacity16'] = type_capacity16
-    df_Gu['area16'] = area16
-    df_Gu['room16'] = room16
-    df_Gu['toilet16'] = toilet16
-    df_Gu['structure16'] = structure16
-    df_Gu['n_this_area16'] = n_this_area16
+    df_code['type_capacity16'] = type_capacity16
+    df_code['area16'] = area16
+    df_code['room16'] = room16
+    df_code['toilet16'] = toilet16
+    df_code['structure16'] = structure16
+    df_code['n_this_area16'] = n_this_area16
 
-    df_Gu['type_capacity17'] = type_capacity17
-    df_Gu['area17'] = area17
-    df_Gu['room17'] = room17
-    df_Gu['toilet17'] = toilet17
-    df_Gu['structure17'] = structure17
-    df_Gu['n_this_area17'] = n_this_area17
+    df_code['type_capacity17'] = type_capacity17
+    df_code['area17'] = area17
+    df_code['room17'] = room17
+    df_code['toilet17'] = toilet17
+    df_code['structure17'] = structure17
+    df_code['n_this_area17'] = n_this_area17
 
-    df_Gu['type_capacity18'] = type_capacity18
-    df_Gu['area18'] = area18
-    df_Gu['room18'] = room18
-    df_Gu['toilet18'] = toilet18
-    df_Gu['structure18'] = structure18
-    df_Gu['n_this_area18'] = n_this_area18
+    df_code['type_capacity18'] = type_capacity18
+    df_code['area18'] = area18
+    df_code['room18'] = room18
+    df_code['toilet18'] = toilet18
+    df_code['structure18'] = structure18
+    df_code['n_this_area18'] = n_this_area18
 
-    df_Gu['type_capacity19'] = type_capacity19
-    df_Gu['area19'] = area19
-    df_Gu['room19'] = room19
-    df_Gu['toilet19'] = toilet19
-    df_Gu['structure19'] = structure19
-    df_Gu['n_this_area19'] = n_this_area19
+    df_code['type_capacity19'] = type_capacity19
+    df_code['area19'] = area19
+    df_code['room19'] = room19
+    df_code['toilet19'] = toilet19
+    df_code['structure19'] = structure19
+    df_code['n_this_area19'] = n_this_area19
 
-    df_Gu['type_capacity20'] = type_capacity20
-    df_Gu['area20'] = area20
-    df_Gu['room20'] = room20
-    df_Gu['toilet20'] = toilet20
-    df_Gu['structure20'] = structure20
-    df_Gu['n_this_area20'] = n_this_area20
+    df_code['type_capacity20'] = type_capacity20
+    df_code['area20'] = area20
+    df_code['room20'] = room20
+    df_code['toilet20'] = toilet20
+    df_code['structure20'] = structure20
+    df_code['n_this_area20'] = n_this_area20
 
 
 '''
@@ -628,7 +628,7 @@ n_this_area20 = []
 
 ########################################################################################################################
 # web_scraping
-df_Gu = pd.read_excel('etc/empty.xlsx')
+df_code = pd.read_excel('etc/empty.xlsx')
 
 n = 1
 
@@ -641,13 +641,13 @@ print("Procedure started at: " + str(time_start))
 
 for i in code_len:
     apt = str(i)
-    chrome.get('https://new.land.naver.com/complexes/' + apt)
-    time.sleep(2)
-
-    city_name = chrome.find_element_by_css_selector('#region_filter > div > a > span:nth-child(2)')
-    con_type_name = chrome.find_element_by_css_selector('#summaryInfo > div.complex_title > span')
-
     try:
+        chrome.get('https://new.land.naver.com/complexes/' + apt)
+        time.sleep(2)
+
+        city_name = chrome.find_element_by_css_selector('#region_filter > div > a > span:nth-child(2)')
+        con_type_name = chrome.find_element_by_css_selector('#summaryInfo > div.complex_title > span')
+
         if city_name.text == '서울시':
             if con_type_name.text == '아파트':
                 link = chrome.find_element_by_css_selector(
@@ -679,14 +679,9 @@ for i in code_len:
                 input_nan_if_null()  # 원하는 정보를 얻지 못했으므로 전체 nan 값 출력, 함수 3 사용
                 get_capacity_info()  # 입력값에 해당하는 정보가 없는 상황에서 자동으로 nan 값 출력
 
-        else:
-            input_nan_if_null()  # 원하는 정보를 얻지 못했으므로 전체 nan 값 출력, 함수 3 사용
-            get_capacity_info()  # 입력값에 해당하는 정보가 없는 상황에서 자동으로 nan 값 출력
     except:
         input_nan_if_null()  # 원하는 정보를 얻지 못했으므로 전체 nan 값 출력, 함수 3 사용
         get_capacity_info()  # 입력값에 해당하는 정보가 없는 상황에서 자동으로 nan 값 출력
-
-append_to_df()  # dataframe 에 모든 리스트 append 시키기
 
 time_end = datetime.now()  # StopWatch: 코드 종료
 print("Procedure finished at: " + str(time_end))
@@ -698,7 +693,7 @@ append_to_df()  # dataframe 에 모든 리스트 append 시키기
 # 문제가 발생한 부분 처리해주기
 
 # df_apt_name = pd.DataFrame(apt_name)
-# df_check = pd.concat([df_Gu, df_apt_name], axis=1)
+# df_check = pd.concat([df_code, df_apt_name], axis=1)
 # df_check
 # print(apt_name[?])
 # apt_name.pop(?)
@@ -708,10 +703,12 @@ append 가 되지 않는 문제가 발생할 경우
 ex) apt_name 의 length 가 맞지 않아 데이터 프레임이 합쳐지지 않는 상황
 다른 length 와 일치하지 않는 부분이 어디인지 확인하여 drop 시킬 필요가 있다. 
 '''
-#df_Gu.dropna(subset = '')
-
-#df_Gu.to_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx', sheet_name='1', index=False)  # 엑셀로 내보내기
 
 
+df_code
+
+df_apt = df_code.dropna(subset=['Apt_name'])
+
+df_apt.to_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx', sheet_name='1', index=False)  # 엑셀로 내보내기
 ########################################################################################################################
 
