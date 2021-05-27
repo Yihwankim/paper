@@ -632,7 +632,7 @@ df_Gu = pd.read_excel('etc/empty.xlsx')
 
 n = 1
 
-code_len = range((n - 1) * 10 + 1, 10 * n + 1)
+code_len = range((n - 1) * 10000 + 1, 10000 * n + 1)
 
 chrome = webdriver.Chrome('chromedriver.exe')
 
@@ -708,9 +708,9 @@ append 가 되지 않는 문제가 발생할 경우
 ex) apt_name 의 length 가 맞지 않아 데이터 프레임이 합쳐지지 않는 상황
 다른 length 와 일치하지 않는 부분이 어디인지 확인하여 drop 시킬 필요가 있다. 
 '''
-df_Gu
+#df_Gu.dropna(subset = '')
 
-df_Gu.to_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx', sheet_name='1', index=False)  # 엑셀로 내보내기
+#df_Gu.to_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx', sheet_name='1', index=False)  # 엑셀로 내보내기
 
 
 ########################################################################################################################

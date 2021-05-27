@@ -1,9 +1,36 @@
+# 2021-05-26
+# 해당 코드의 목적은 작업의 효율성과 가독성을 높이기 위함입니다.
+# Chapter 2: melting_ capacity type 을 행으로 넣어 면적별 정보 업데이트
+# 목적 : 면적 유형별로 아파트 정보를 분류시키기
 
+# import packages
+from selenium import webdriver
+import time
+import openpyxl
+from bs4 import BeautifulSoup
+import pandas as pd
+from selenium.webdriver.common.keys import Keys
+import numpy as np
+from urllib.parse import urlparse  # 출처: https://datamasters.co.kr/67 [데이터마스터]
+from datetime import datetime  # 코드 내에 타이머를 사용하면 여러모로 편리합니다.
 
+#############################################################################################################
+# 엑셀파일 불러오기
+n = 1  # 숫자 조정
 
-# melting
+# 하단의 코드는 추후 수정되어야 한다. Chapter 1에서 모든 아파트 정보를 크롤링 한 이후 해당 코드를 수정하여 최종 엑셀을 불러오도록 하자
+df_data = pd.read_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx')
+df_Gu = pd.read_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx', usecols='A:P')
+#############################################################################################################
+# Melting
 
-df_data = pd.read_excel('Naver_web_crawling_code_main/' + str(n) + '.xlsx', usecols='A:P')
+'''
+df_data 를 열어 type_capacity 항목 중 몇번째 항목까지 값이 있는지를 확인한다. 
+예를들어 전체 데이터프레임에서 단 한개의 행이라도 (= 단 한개의 아파트라도) type_capacity 20 에 nan 값이 아닌
+실측치가 있다면, length 를 20으로 설정하여 코드를 돌리면 된다.
+
+그러나 전체 행 중 가장 긴 항목의 type_capacity 가 10이라면, length 를 10으로 설정하여 코드를 돌려야 한다.  
+'''
 
 se_type1 = df_data['type_capacity1'].str.cat(df_data[['area1',
                                                       'room1',
@@ -126,9 +153,8 @@ se_type20 = df_data['type_capacity20'].str.cat(df_data[['area20',
                                                         'n_this_area20']], sep=',')
 
 df_Gu = pd.concat([df_Gu, se_type1, se_type2, se_type3, se_type4, se_type5, se_type6, se_type7, se_type8,
-                   se_type9, se_type10, se_type11, se_type12, se_type13, se_type14, se_type15, se_type16, se_type17
-                      , se_type18, se_type19, se_type20],
-                  axis=1)
+                   se_type9, se_type10, se_type11, se_type12, se_type13, se_type14, se_type15, se_type16, se_type17,
+                   se_type18, se_type19, se_type20], axis=1)
 
 df_edit = df_Gu.melt(id_vars=['읍면동', '아파트', '세대수', '입주년월', 'Apt_name', 'number', 'floor',
                               'confirm_date', 'car', 'FAR', 'BC', 'con', 'heat', 'code', 'lat',
