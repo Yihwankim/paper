@@ -119,7 +119,7 @@ sub_length = len(sub_lat)
 park_length = len(park_lat)
 
 # 코드 실행
-get_distance_apt(elem_length, elem_lat, elem_long, apt_to_elem, dist_elem)
+#get_distance_apt(elem_length, elem_lat, elem_long, apt_to_elem, dist_elem)
 
 get_distance_apt(middle_length, middle_lat, middle_long, apt_to_middle, dist_middle)
 
@@ -130,7 +130,7 @@ get_distance_apt(sub_length, sub_lat, sub_long, apt_to_sub, dist_sub)
 get_distance_apt(park_length, park_lat, park_long, apt_to_park, dist_park)
 
 # 기존 파일에 append
-df_seoul['dist_elem'] = dist_elem
+#df_seoul['dist_elem'] = dist_elem
 df_seoul['dist_middle'] = dist_middle
 df_seoul['dist_high'] = dist_high
 
