@@ -74,7 +74,7 @@ df_middle = pd.read_excel('District data/학교현황.xlsx', sheet_name='중학�
 df_high = pd.read_excel('District data/학교현황.xlsx', sheet_name='고등학교', header=0, skipfooter=0)
 
 # 지하철과의 거리
-df_sub = pd.read_excel('District data/지하철현황_최신.xlsx', header=0, skipfooter=0)
+df_sub = pd.read_excel('District data/경기도 역사 정보.xlsx', header=0, skipfooter=0)
 df_sub.info()
 
 # 공원과의 거리
@@ -147,7 +147,7 @@ df_seoul['dist_sub'] = dist_sub
 
 df_seoul['dist_park'] = dist_park
 
-df_seoul.to_excel('seminar data/Seoul_including_distance2.xlsx', sheet_name='including_distance', index=False)
+df_seoul.to_excel('seminar data/Seoul_including_distance.xlsx', sheet_name='including_distance', index=False)
 
 '''
 ## 예시
