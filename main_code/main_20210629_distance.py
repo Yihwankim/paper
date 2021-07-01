@@ -4,8 +4,6 @@
 # 개별 아파트까지의 거리를 추가
 
 # import packages
-from typing import Any, Tuple
-
 import pandas as pd
 import numpy as np
 from haversine import haversine
@@ -15,6 +13,14 @@ from tqdm import tqdm
 ########################################################################################################################
 # 함수 선언
 
+'''
+거리 구하기 예시
+a = (37.552863, 126.87386)
+b = (37.573943, 126.804646)
+haversine(a, b, unit='km')
+'''
+
+
 def get_distance_apt(variable_length, variable_lat, variable_long, apt_to_variable, dist_variable):
     for i in tqdm(range(apt_length)):
         each_apt = (seoul_lat[i], seoul_long[i])
@@ -23,8 +29,9 @@ def get_distance_apt(variable_length, variable_lat, variable_long, apt_to_variab
             each_variable = (variable_lat[j], variable_long[j])
             a = haversine(each_apt, each_variable, unit='km')
             apt_to_variable.append(a)
-            b = min(apt_to_variable)
 
+        b = min(apt_to_variable)
+        apt_to_variable.clear()
         dist_variable.append(b)
 
 
@@ -55,11 +62,11 @@ dist_park = []
 # 엑셀 호출
 
 # 아파트 정보
-df_seoul_before = pd.read_excel('seminar data/Seoul_last.xlsx', header=0, skipfooter=0)
+df_seoul = pd.read_excel('seminar data/Seoul_last.xlsx', header=0, skipfooter=0)
 
-df_seoul = df_seoul_before.drop_duplicates(['아파트코드'], keep='first')  # 계산을 더 빠르게 하기위해 면적유형 제거
-df_seoul = df_seoul.reset_index(drop='True')
-df_seoul.info()
+#df_seoul = df_seoul_before.drop_duplicates(['아파트코드'], keep='first')  # 계산을 더 빠르게 하기위해 면적유형 제거
+#df_seoul = df_seoul.reset_index(drop='True')
+#df_seoul.info()
 
 # 학교 정보
 df_elem = pd.read_excel('District data/학교현황.xlsx', sheet_name='초등학교', header=0, skipfooter=0)
@@ -67,13 +74,14 @@ df_middle = pd.read_excel('District data/학교현황.xlsx', sheet_name='중학�
 df_high = pd.read_excel('District data/학교현황.xlsx', sheet_name='고등학교', header=0, skipfooter=0)
 
 # 지하철과의 거리
-df_sub = pd.read_excel('District data/지하철현황.xlsx', header=0, skipfooter=0)
+df_sub = pd.read_excel('District data/지하철현황_최신.xlsx', header=0, skipfooter=0)
 df_sub.info()
 
 # 공원과의 거리
 df_park = pd.read_excel('District data/공원현황.xlsx', header=0, skipfooter=0)
 df_park.info()
-
+df_park = df_park.dropna(axis=0)
+df_park = df_park.reset_index(drop='True')
 ########################################################################################################################
 # 각 변수별 위도와 경도 정리
 
@@ -119,7 +127,8 @@ sub_length = len(sub_lat)
 park_length = len(park_lat)
 
 # 코드 실행
-#get_distance_apt(elem_length, elem_lat, elem_long, apt_to_elem, dist_elem)
+
+get_distance_apt(elem_length, elem_lat, elem_long, apt_to_elem, dist_elem)
 
 get_distance_apt(middle_length, middle_lat, middle_long, apt_to_middle, dist_middle)
 
@@ -130,7 +139,7 @@ get_distance_apt(sub_length, sub_lat, sub_long, apt_to_sub, dist_sub)
 get_distance_apt(park_length, park_lat, park_long, apt_to_park, dist_park)
 
 # 기존 파일에 append
-#df_seoul['dist_elem'] = dist_elem
+df_seoul['dist_elem'] = dist_elem
 df_seoul['dist_middle'] = dist_middle
 df_seoul['dist_high'] = dist_high
 
@@ -138,4 +147,26 @@ df_seoul['dist_sub'] = dist_sub
 
 df_seoul['dist_park'] = dist_park
 
-df_seoul.to_excel('seminar data/Seoul_including_distance.xlsx', sheet_name='including_distance', index=False)
+df_seoul.to_excel('seminar data/Seoul_including_distance2.xlsx', sheet_name='including_distance', index=False)
+
+'''
+## 예시
+apt_length = 5
+elem_length = 5
+
+for i in tqdm(range(apt_length)):
+    each_apt = (seoul_lat[i], seoul_long[i])
+
+    for j in range(elem_length):
+        each_variable = (elem_lat[j], elem_long[j])
+        a = haversine(each_apt, each_variable, unit='km')
+        apt_to_elem.append(a)
+        b = min(apt_to_elem)
+        apt_to_elem.clear()
+
+    dist_elem.append(b)
+
+dist_elem
+
+# dist_elem.clear()
+'''

@@ -630,9 +630,11 @@ n_this_area20 = []
 # web_scraping
 df_code = pd.read_excel('etc/empty.xlsx')
 
-n = 1
+#n = 1
 
-code_len = range((n - 1) * 10000 + 1, 10000 * n + 1)
+#code_len = range((n - 1) * 10000 + 1, 10000 * n + 1)
+
+code_len = range(133, 135)
 
 chrome = webdriver.Chrome('chromedriver.exe')
 
