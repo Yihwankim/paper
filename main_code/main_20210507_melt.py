@@ -181,4 +181,4 @@ df_Gu_last = df_edit2.drop(['value', 'variable', '아파트',
 
 df_Gu_last.insert(0, 'Gu', '관악구')  # 이름 확인 주의
 
-df_Gu_last.to_excel('Gangnam_edit4/Gwanakgu_edit3.xlsx', sheet_name='edit4', index=False)  # 이름 확인 주의
+df_Gu_last.to_excel('Gangnam_edit4/Gwanakgu_edit4.xlsx', sheet_name='edit4', index=False)  # 이름 확인 주의
