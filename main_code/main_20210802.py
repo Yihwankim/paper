@@ -87,10 +87,10 @@ for i in tqdm(range(length)):
 
         # 세부적인 조정
         df_seoul_Q = df_seoul_1q[['지역구', '법정동', '아파트_x', '아파트_y', '아파트코드', '사용승인일', '연수', '세대수',
-                                   '저층', '고층', '주차대수_총', '주차대수_세대', '용적률', '건폐율', '위도', '경도', '건설사',
-                                   '난방', '구조', '면적유형', '전용면적', '전용률', '방개수', '화장실개수',
-                                   'dist_elem', 'dist_middle', 'dist_high', 'dist_sub', 'dist_park', '층', '거래금액',
-                                   'H1', 'H2', 'H3', 'T1', 'T2', 'T3', 'G1']]
+                                  '저층', '고층', '주차대수_총', '주차대수_세대', '용적률', '건폐율', '위도', '경도', '건설사',
+                                  '난방', '구조', '면적유형', '전용면적', '전용률', '방개수', '화장실개수',
+                                  'dist_elem', 'dist_middle', 'dist_high', 'dist_sub', 'dist_park', '층', '거래금액',
+                                  'H1', 'H2', 'H3', 'T1', 'T2', 'T3', 'G1']]
 
         df_seoul_Q['층'] = pd.to_numeric(df_seoul_Q['층'])
         df_seoul_Q['거래금액'].iloc[0]
@@ -113,9 +113,9 @@ for i in tqdm(range(length)):
         df_index = df_seoul_Q
 
     else:
-        data01 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i*3 + 1) + '.pkl')
-        data02 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i*3 + 2) + '.pkl')
-        data03 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i*3 + 3) + '.pkl')
+        data01 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i * 3 + 1) + '.pkl')
+        data02 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i * 3 + 2) + '.pkl')
+        data03 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i * 3 + 3) + '.pkl')
 
         # 월별 데이터를 각 분기별 데이터로 만들기
         data_quarter = pd.concat([data01, data02, data03], axis=0)
@@ -161,10 +161,10 @@ for i in tqdm(range(length)):
 
         # 세부적인 조정
         df_seoul_Q = df_seoul_q[['지역구', '법정동', '아파트_x', '아파트_y', '아파트코드', '사용승인일', '연수', '세대수',
-                                  '저층', '고층', '주차대수_총', '주차대수_세대', '용적률', '건폐율', '위도', '경도', '건설사',
-                                  '난방', '구조', '면적유형', '전용면적', '전용률', '방개수', '화장실개수',
-                                  'dist_elem', 'dist_middle', 'dist_high', 'dist_sub', 'dist_park', '층', '거래금액',
-                                  'H1', 'H2', 'H3', 'T1', 'T2', 'T3', 'G1']]
+                                 '저층', '고층', '주차대수_총', '주차대수_세대', '용적률', '건폐율', '위도', '경도', '건설사',
+                                 '난방', '구조', '면적유형', '전용면적', '전용률', '방개수', '화장실개수',
+                                 'dist_elem', 'dist_middle', 'dist_high', 'dist_sub', 'dist_park', '층', '거래금액',
+                                 'H1', 'H2', 'H3', 'T1', 'T2', 'T3', 'G1']]
 
         df_seoul_Q['층'] = pd.to_numeric(df_seoul_Q['층'])
         df_seoul_Q['거래금액'].iloc[0]
@@ -187,7 +187,3 @@ for i in tqdm(range(length)):
         df_index = pd.concat([df_index, df_seoul_Q])
 
         df_index.to_excel('Hedonic_index/Seoul_index.xlsx', index=False)
-
-
-
-
