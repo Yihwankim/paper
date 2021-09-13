@@ -1,8 +1,15 @@
-# 2021-04-01
-# selenium을 이용한 크롤링 일반화 작업
-# 면적별 정보 append
-# 입력값과 출력값이 상응하는지 확인하기 위해 아파트 명을 dataframe에 추가
-# 엑셀 시트를 하나의 dataframe으로 합쳐 최종적으로 구별 아파트 정보를 출력 및 저장
+# 2021-05-07
+# Chapter 1
+# input data 를 활용하여 네이버 부동산 크롤링 하기
+
+# 2021-04-05
+# selenium 을 이용한 크롤링 일반화 작업
+# 면적별 정보를 불러올 때 6개가 넘어가는 경우 화살표 버튼을 활성화하는 기능
+# 면적별 정보가 10개가 넘어갈 때(10개를 다 채운 아파트의 경우 엑셀에서 직접 전처리 과정을 실행할 것)
+# 입력값과 출력값이 상응하는지 확인하기 위해 아파트 명을 dataframe 에 추가
+# 아파트 명의 경우 엑셀로 변환시 (= dataframe 에서 최종 위치가) 기존 엑셀 데이터의 아파트 뒤에 오도록 위치 (입력값과 출력값을 확인하기 위함)
+# 면적별 정보를 append 할 때 type_capacity 이라는 이름을 붙여주어 각 정보가 어떤 면적에 대한 정보인지 가늠할 수 있도록 조치
+# 엑셀 시트를 하나의 dataframe 으로 합쳐 최종적으로 구별 아파트 정보를 출력 및 저장
 
 # HKim: PEP8 스타일 가이드를 가급적 준수하세요.
 # 1. 패키지를 불러온 이후에는 두 줄 띄웁니다.
@@ -35,7 +42,8 @@ def get_apt_info():
     number.append(chrome.find_element_by_css_selector(number_selector).text)
     floor_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(1) > td:nth-child(4)"
     floor.append(chrome.find_element_by_css_selector(floor_selector).text)
-    confirm_date_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > td:nth-child(2)"
+    confirm_date_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > " \
+                            "td:nth-child(2) "
     confirm_date.append(chrome.find_element_by_css_selector(confirm_date_selector).text)
     car_selector = "#detailContents1 > div.detail_box--complex > table > tbody > tr:nth-child(2) > td:nth-child(4)"
     car.append(chrome.find_element_by_css_selector(car_selector).text)
@@ -56,7 +64,7 @@ def get_url_info():
     df_url = pd.DataFrame([urlparse(current_url)])
 
     path = df_url.loc[0]['path']
-    code.append(path.split('/')[2])  # code에 아파트 코드 담기
+    code.append(path.split('/')[2])  # code 에 아파트 코드 담기
 
     query = df_url.loc[0]['query']
     check = query.split('=')[1]
@@ -81,9 +89,12 @@ def input_nan_if_null():
 
 
 # 함수선언 4: 면적 정보 추출
-def input_value_in_vars(area, room, toilet, n_this_area, structure, i):
+def input_value_in_vars(type_capacity, area, room, toilet, n_this_area, structure, i):
     try:
         if i == 0:
+            type_capacity_selector = "#tab0 > span"
+            type_capacity.append(chrome.find_element_by_css_selector(type_capacity_selector).text)
+
             area_selector = "#tabpanel > table > tbody > tr:nth-child(1) > td"
             area.append(chrome.find_element_by_css_selector(area_selector).text)
 
@@ -100,10 +111,41 @@ def input_value_in_vars(area, room, toilet, n_this_area, structure, i):
 
             time.sleep(2)
 
+        elif i == 7:
+            down_scroll = "#detailContents1 > div.detail_box--floor_plan > div.detail_sorting_tabs > div > " \
+                          "div.btn_moretab_box > button "
+            chrome.find_element_by_css_selector(down_scroll).click()
+            time.sleep(1)
+
+            n = str(i)
+            num_capacity = "#tab" + n + "> span"
+            chrome.find_element_by_css_selector(num_capacity).click()
+
+            type_capacity.append(chrome.find_element_by_css_selector(num_capacity).text)
+
+            area_selector = "#tabpanel > table > tbody > tr:nth-child(1) > td"
+            area.append(chrome.find_element_by_css_selector(area_selector).text)
+
+            rt_selector = "#tabpanel > table > tbody > tr:nth-child(2) > td"  # 방 개수와 화장실 개수
+            rt = chrome.find_element_by_css_selector(rt_selector).text
+            room.append(rt.split('/')[0])
+            toilet.append(rt.split('/')[1])
+
+            n_this_area_selector = "#tabpanel > table > tbody > tr:nth-child(3) > td"
+            n_this_area.append(chrome.find_element_by_css_selector(n_this_area_selector).text)
+
+            structure_selector = "#tabpanel > table > tbody > tr:nth-child(4) > td"
+            structure.append(chrome.find_element_by_css_selector(structure_selector).text)
+
+            time.sleep(2)
+
+
         else:
             n = str(i)
             num_capacity = "#tab" + n + "> span"
             chrome.find_element_by_css_selector(num_capacity).click()
+
+            type_capacity.append(chrome.find_element_by_css_selector(num_capacity).text)
 
             area_selector = "#tabpanel > table > tbody > tr:nth-child(1) > td"
             area.append(chrome.find_element_by_css_selector(area_selector).text)
@@ -122,6 +164,7 @@ def input_value_in_vars(area, room, toilet, n_this_area, structure, i):
             time.sleep(2)
 
     except Exception as ex:
+        type_capacity.append(np.nan)
         area.append(np.nan)
         room.append(np.nan)
         toilet.append(np.nan)
@@ -132,109 +175,119 @@ def input_value_in_vars(area, room, toilet, n_this_area, structure, i):
 
 # 함수선언 5: 면적정보 1~10 리스트에 append 하기
 def get_capacity_info():
-    input_value_in_vars(area1, room1, toilet1, n_this_area1, structure1, i=0)
-    input_value_in_vars(area2, room2, toilet2, n_this_area2, structure2, i=1)
-    input_value_in_vars(area3, room3, toilet3, n_this_area3, structure3, i=2)
-    input_value_in_vars(area4, room4, toilet4, n_this_area4, structure4, i=3)
-    input_value_in_vars(area5, room5, toilet5, n_this_area5, structure5, i=4)
-    input_value_in_vars(area6, room6, toilet6, n_this_area6, structure6, i=5)
-    input_value_in_vars(area7, room7, toilet7, n_this_area7, structure7, i=6)
-    input_value_in_vars(area8, room8, toilet8, n_this_area8, structure8, i=7)
-    input_value_in_vars(area9, room9, toilet9, n_this_area9, structure9, i=8)
-    input_value_in_vars(area10, room10, toilet10, n_this_area10, structure10, i=9)
+    input_value_in_vars(type_capacity1, area1, room1, toilet1, n_this_area1, structure1, i=0)
+    input_value_in_vars(type_capacity2, area2, room2, toilet2, n_this_area2, structure2, i=1)
+    input_value_in_vars(type_capacity3, area3, room3, toilet3, n_this_area3, structure3, i=2)
+    input_value_in_vars(type_capacity4, area4, room4, toilet4, n_this_area4, structure4, i=3)
+    input_value_in_vars(type_capacity5, area5, room5, toilet5, n_this_area5, structure5, i=4)
+    input_value_in_vars(type_capacity6, area6, room6, toilet6, n_this_area6, structure6, i=5)
+    input_value_in_vars(type_capacity7, area7, room7, toilet7, n_this_area7, structure7, i=6)
+    input_value_in_vars(type_capacity8, area8, room8, toilet8, n_this_area8, structure8, i=7)
+    input_value_in_vars(type_capacity9, area9, room9, toilet9, n_this_area9, structure9, i=8)
+    input_value_in_vars(type_capacity10, area10, room10, toilet10, n_this_area10, structure10, i=9)
 
 
 # 함수선언 6: 크롤링한 data DataFrame 에 append 하기
 
-def appending_to_df():
-    df_dongdaemoongu['Apt_name'] = apt_name
-    df_dongdaemoongu['number'] = number
-    df_dongdaemoongu['floor'] = floor
-    df_dongdaemoongu['confirm_date'] = confirm_date
-    df_dongdaemoongu['car'] = car
-    df_dongdaemoongu['FAR'] = FAR
-    df_dongdaemoongu['BC'] = BC
-    df_dongdaemoongu['con'] = con
-    df_dongdaemoongu['heat'] = heat
-    df_dongdaemoongu['code'] = code
-    df_dongdaemoongu['lat'] = lat
-    df_dongdaemoongu['long'] = long
+def append_to_df():
+    df_Gu['Apt_name'] = apt_name
+    df_Gu['number'] = number
+    df_Gu['floor'] = floor
+    df_Gu['confirm_date'] = confirm_date
+    df_Gu['car'] = car
+    df_Gu['FAR'] = FAR
+    df_Gu['BC'] = BC
+    df_Gu['con'] = con
+    df_Gu['heat'] = heat
+    df_Gu['code'] = code
+    df_Gu['lat'] = lat
+    df_Gu['long'] = long
 
-    df_dongdaemoongu['area1'] = area1
-    df_dongdaemoongu['room1'] = room1
-    df_dongdaemoongu['toilet1'] = toilet1
-    df_dongdaemoongu['structure1'] = structure1
-    df_dongdaemoongu['n_this_area1'] = n_this_area1
+    df_Gu['type_capacity1'] = type_capacity1
+    df_Gu['area1'] = area1
+    df_Gu['room1'] = room1
+    df_Gu['toilet1'] = toilet1
+    df_Gu['structure1'] = structure1
+    df_Gu['n_this_area1'] = n_this_area1
 
-    df_dongdaemoongu['area2'] = area2
-    df_dongdaemoongu['room2'] = room2
-    df_dongdaemoongu['toilet2'] = toilet2
-    df_dongdaemoongu['structure2'] = structure2
-    df_dongdaemoongu['n_this_area2'] = n_this_area2
+    df_Gu['type_capacity2'] = type_capacity2
+    df_Gu['area2'] = area2
+    df_Gu['room2'] = room2
+    df_Gu['toilet2'] = toilet2
+    df_Gu['structure2'] = structure2
+    df_Gu['n_this_area2'] = n_this_area2
 
-    df_dongdaemoongu['area3'] = area3
-    df_dongdaemoongu['room3'] = room3
-    df_dongdaemoongu['toilet3'] = toilet3
-    df_dongdaemoongu['structure3'] = structure3
-    df_dongdaemoongu['n_this_area3'] = n_this_area3
+    df_Gu['type_capacity3'] = type_capacity3
+    df_Gu['area3'] = area3
+    df_Gu['room3'] = room3
+    df_Gu['toilet3'] = toilet3
+    df_Gu['structure3'] = structure3
+    df_Gu['n_this_area3'] = n_this_area3
 
-    df_dongdaemoongu['area4'] = area4
-    df_dongdaemoongu['room4'] = room4
-    df_dongdaemoongu['toilet4'] = toilet4
-    df_dongdaemoongu['structure4'] = structure4
-    df_dongdaemoongu['n_this_area4'] = n_this_area4
+    df_Gu['type_capacity4'] = type_capacity4
+    df_Gu['area4'] = area4
+    df_Gu['room4'] = room4
+    df_Gu['toilet4'] = toilet4
+    df_Gu['structure4'] = structure4
+    df_Gu['n_this_area4'] = n_this_area4
 
-    df_dongdaemoongu['area5'] = area5
-    df_dongdaemoongu['room5'] = room5
-    df_dongdaemoongu['toilet5'] = toilet5
-    df_dongdaemoongu['structure5'] = structure5
-    df_dongdaemoongu['n_this_area5'] = n_this_area5
+    df_Gu['type_capacity5'] = type_capacity5
+    df_Gu['area5'] = area5
+    df_Gu['room5'] = room5
+    df_Gu['toilet5'] = toilet5
+    df_Gu['structure5'] = structure5
+    df_Gu['n_this_area5'] = n_this_area5
 
-    df_dongdaemoongu['area6'] = area6
-    df_dongdaemoongu['room6'] = room6
-    df_dongdaemoongu['toilet6'] = toilet6
-    df_dongdaemoongu['structure6'] = structure6
-    df_dongdaemoongu['n_this_area6'] = n_this_area6
+    df_Gu['type_capacity6'] = type_capacity6
+    df_Gu['area6'] = area6
+    df_Gu['room6'] = room6
+    df_Gu['toilet6'] = toilet6
+    df_Gu['structure6'] = structure6
+    df_Gu['n_this_area6'] = n_this_area6
 
-    df_dongdaemoongu['area7'] = area7
-    df_dongdaemoongu['room7'] = room7
-    df_dongdaemoongu['toilet7'] = toilet7
-    df_dongdaemoongu['structure7'] = structure7
-    df_dongdaemoongu['n_this_area7'] = n_this_area7
+    df_Gu['type_capacity7'] = type_capacity7
+    df_Gu['area7'] = area7
+    df_Gu['room7'] = room7
+    df_Gu['toilet7'] = toilet7
+    df_Gu['structure7'] = structure7
+    df_Gu['n_this_area7'] = n_this_area7
 
-    df_dongdaemoongu['area8'] = area8
-    df_dongdaemoongu['room8'] = room8
-    df_dongdaemoongu['toilet8'] = toilet8
-    df_dongdaemoongu['structure8'] = structure8
-    df_dongdaemoongu['n_this_area8'] = n_this_area8
+    df_Gu['type_capacity8'] = type_capacity8
+    df_Gu['area8'] = area8
+    df_Gu['room8'] = room8
+    df_Gu['toilet8'] = toilet8
+    df_Gu['structure8'] = structure8
+    df_Gu['n_this_area8'] = n_this_area8
 
-    df_dongdaemoongu['area9'] = area9
-    df_dongdaemoongu['room9'] = room9
-    df_dongdaemoongu['toilet9'] = toilet9
-    df_dongdaemoongu['structure9'] = structure9
-    df_dongdaemoongu['n_this_area9'] = n_this_area9
+    df_Gu['type_capacity9'] = type_capacity9
+    df_Gu['area9'] = area9
+    df_Gu['room9'] = room9
+    df_Gu['toilet9'] = toilet9
+    df_Gu['structure9'] = structure9
+    df_Gu['n_this_area9'] = n_this_area9
 
-    df_dongdaemoongu['area10'] = area10
-    df_dongdaemoongu['room10'] = room10
-    df_dongdaemoongu['toilet10'] = toilet10
-    df_dongdaemoongu['structure10'] = structure10
-    df_dongdaemoongu['n_this_area10'] = n_this_area10
+    df_Gu['type_capacity10'] = type_capacity10
+    df_Gu['area10'] = area10
+    df_Gu['room10'] = room10
+    df_Gu['toilet10'] = toilet10
+    df_Gu['structure10'] = structure10
+    df_Gu['n_this_area10'] = n_this_area10
 
 
 ########################################################################################################################
 # 엑셀값 출력
 
-df_dongdaemoongu = pd.read_excel('Gangbuk/dongdaemoongu.xlsx', sheet_name=None, header=0, skipfooter=0,
-                                 usecols='C:D, G:H')
+df_Gu = pd.read_excel('Gangbuk/Eunpyeonggu.xlsx', sheet_name=None, header=0, skipfooter=0,
+                      usecols='C:D, G:H')
 
 # 출력한 엑셀값 하나로 합치기
-df_dongdaemoongu = pd.concat(df_dongdaemoongu, ignore_index='Ture')
+df_Gu = pd.concat(df_Gu, ignore_index='Ture')
 
-df_dongdaemoongu = df_dongdaemoongu.drop_duplicates(['아파트'], keep='first')
-df_dongdaemoongu = df_dongdaemoongu.sort_values(by=['아파트'])
-df_dongdaemoongu = df_dongdaemoongu.reset_index(drop='Ture')
+df_Gu = df_Gu.drop_duplicates(['아파트'], keep='first')
+df_Gu = df_Gu.sort_values(by=['아파트'])
+df_Gu = df_Gu.reset_index(drop='Ture')
 
-df_name = df_dongdaemoongu[['읍면동', '아파트']]  # 여러 열을 추출하고 싶을때는 [[ 두개를 사용 ]]
+df_name = df_Gu[['읍면동', '아파트']]  # 여러 열을 추출하고 싶을때는 [[ 두개를 사용 ]]
 
 df_name = df_name.astype('str')
 se_name = df_name['읍면동'] + " " + df_name['아파트']
@@ -257,60 +310,70 @@ code = []  # 아파트 코드
 
 # 2. 면적별 정보 리스트
 # 1)
+type_capacity1 = []
 area1 = []  # 면적 : 공급/전용(전용률)
 room1 = []  # 방 갯수
 toilet1 = []  # 화장실 개수
 structure1 = []  # 현관구조
 n_this_area1 = []  # 해당면적 세대수
 # 2)
+type_capacity2 = []
 area2 = []
 room2 = []
 toilet2 = []
 structure2 = []
 n_this_area2 = []
 # 3)
+type_capacity3 = []
 area3 = []
 room3 = []
 toilet3 = []
 structure3 = []
 n_this_area3 = []
 # 4)
+type_capacity4 = []
 area4 = []
 room4 = []
 toilet4 = []
 structure4 = []
 n_this_area4 = []
 # 5)
+type_capacity5 = []
 area5 = []
 room5 = []
 toilet5 = []
 structure5 = []
 n_this_area5 = []
 # 6)
+type_capacity6 = []
 area6 = []
 room6 = []
 toilet6 = []
 structure6 = []
 n_this_area6 = []
 # 7)
+type_capacity7 = []
 area7 = []
 room7 = []
 toilet7 = []
 structure7 = []
 n_this_area7 = []
 # 8)
+type_capacity8 = []
 area8 = []
 room8 = []
 toilet8 = []
 structure8 = []
 n_this_area8 = []
 # 9)
+type_capacity9 = []
 area9 = []
 room9 = []
 toilet9 = []
 structure9 = []
 n_this_area9 = []
 # 10)
+type_capacity10 = []
 area10 = []
 room10 = []
 toilet10 = []
@@ -415,18 +478,99 @@ print("Procedure finished at: " + str(time_end))
 print("Elapsed (in this Procedure): " + str(time_end - time_start))
 
 # 엑셀에 append 시키기
-appending_to_df()
+append_to_df()
+
 
 # 스크래핑 종료
 ########################################################################################################################
 
-# 91번째 row 삭제
-apt = pd.DataFrame(apt_name)
-df_apt = apt.drop(index=91)
-apt_name = df_apt.values.tolist()
+# 각 항목의 length 확인하기
+def check_length():
+    print('apt_name: ', len(apt_name))
+    print('number: ', len(number))
+    print('floor: ', len(floor))
+    print('confirm_date: ', len(confirm_date))
+    print('car: ', len(car))
+    print('FAR: ', len(FAR))
+    print('BC: ', len(BC))
+    print('con: ', len(con))
+    print('heat: ', len(heat))
+    print('lat: ', len(lat))
+    print('long: ', len(long))
+    print('code: ', len(code))
+    print('type_capacity1: ', len(type_capacity1))
+    print('area1: ', len(area1))
+    print('room1: ', len(room1))
+    print('toilet1: ', len(toilet1))
+    print('structure1: ', len(structure1))
+    print('n_this_area1: ', len(n_this_area1))
+    print('type_capacity2: ', len(type_capacity2))
+    print('area2: ', len(area2))
+    print('room2: ', len(room2))
+    print('toilet2: ', len(toilet2))
+    print('structure2: ', len(structure2))
+    print('n_this_area2: ', len(n_this_area2))
+    print('type_capacity3: ', len(type_capacity3))
+    print('area3: ', len(area3))
+    print('room3: ', len(room3))
+    print('toilet3: ', len(toilet3))
+    print('structure3: ', len(structure3))
+    print('n_this_area3: ', len(n_this_area3))
+    print('type_capacity4: ', len(type_capacity4))
+    print('area4: ', len(area4))
+    print('room4: ', len(room4))
+    print('toilet4: ', len(toilet4))
+    print('structure4: ', len(structure4))
+    print('n_this_area4: ', len(n_this_area4))
+    print('type_capacity5: ', len(type_capacity5))
+    print('area5: ', len(area5))
+    print('room5: ', len(room5))
+    print('toilet5: ', len(toilet5))
+    print('structure5: ', len(structure5))
+    print('n_this_area5: ', len(n_this_area5))
+    print('type_capacity6: ', len(type_capacity6))
+    print('area6: ', len(area6))
+    print('room6: ', len(room6))
+    print('toilet6: ', len(toilet6))
+    print('structure6: ', len(structure6))
+    print('n_this_area6: ', len(n_this_area6))
+    print('type_capacity7: ', len(type_capacity7))
+    print('area7: ', len(area7))
+    print('room7: ', len(room7))
+    print('toilet7: ', len(toilet7))
+    print('structure7: ', len(structure7))
+    print('n_this_area7: ', len(n_this_area7))
+    print('type_capacity8: ', len(type_capacity8))
+    print('area8: ', len(area8))
+    print('room8: ', len(room8))
+    print('toilet8: ', len(toilet8))
+    print('structure8: ', len(structure8))
+    print('n_this_area8: ', len(n_this_area8))
+    print('type_capacity9: ', len(type_capacity9))
+    print('area9: ', len(area9))
+    print('room9: ', len(room9))
+    print('toilet9: ', len(toilet9))
+    print('structure9: ', len(structure9))
+    print('n_this_area9: ', len(n_this_area9))
+    print('type_capacity10: ', len(type_capacity10))
+    print('area10: ', len(area10))
+    print('room10: ', len(room10))
+    print('toilet10: ', len(toilet10))
+    print('structure10: ', len(structure10))
+    print('n_this_area10: ', len(n_this_area10))
 
-# 나머지 리스트도 데이터 프레임에 합쳐주기
 
+#######################################################################################################################
+# apt_name 의 length 가 맞지 않아 데이터프레임이 합쳐지지 않을 경우.
+# apt_name 일치 안할 경우, 해당 항목을 drop 시켜야 한다.
+# 확인하기 위한 코드
+
+# df_apt_name = pd.DataFrame(apt_name)
+# df_check = pd.concat([df_Gu, df_apt_name], axis=1)
+# df_check
+# print(apt_name[?])
+# apt_name.pop(?)
+#######################################################################################################################
 
 # 결과값 엑셀로 내보내기
-df_dongdaemoongu.to_excel('Gangbuk/dongdaemoongu_edit1.xlsx', sheet_name='edit1', index=False)
+df_Gu.to_excel('Gangbuk_edit1/Eunpyeonggu_edit1.xlsx', sheet_name='edit1', index=False)

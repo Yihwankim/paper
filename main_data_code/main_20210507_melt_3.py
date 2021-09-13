@@ -1,9 +1,13 @@
-# 2021-04-19
+# 2021-05-07
+# Chapter 3
+# edit_3로 만든 파일들을 melt 를 활용하여 면적별 정보로 나열
+# 최종적으로 edit_4로 저장하기
 
 # 최종 비교시 고려할 사항
 # 1. 아파트 이름(인덱스)과 읍면동, 아파트 정보가 동일한지 여부
 # 2. 아파트 세대수가 면적별 세대수의 합과 동일한지 여부
 # 3. type of capacity 의 모든 element 가 nan 으로 채워져 있을 경우 오류가 발생하므로 주의
+
 
 # Import packages
 import pandas as pd
@@ -177,5 +181,4 @@ df_Gu_last = df_edit2.drop(['value', 'variable', '아파트',
 
 df_Gu_last.insert(0, 'Gu', '관악구')  # 이름 확인 주의
 
-
-df_Gu_last.to_excel('Gangnam_edit4/Gwanakgu_edit3.xlsx', sheet_name='edit4', index=False)  # 이름 확인 주의
+df_Gu_last.to_excel('Gangnam_edit4/Gwanakgu_edit4.xlsx', sheet_name='edit4', index=False)  # 이름 확인 주의

@@ -1,11 +1,15 @@
-# 2021-04-23
+# 2021-05-07
+# Chapter 4
+
+# melt 가 이루어진 edit_4 엑셀 파일들을 하나의 엑셀파일로 통합하기
+# 이때 각 컬럼들을 숫자, 문자열 등으로 구분하여 타입을 재지정해주기
 
 
 # Import packages
 import pandas as pd
 import numpy as np
 
-#############################################################################################################
+########################################################################################################################
 # 엑셀 파일 한번에 불러오기
 # 강북 엑셀파일 불러오기
 
@@ -57,14 +61,14 @@ print('Data loading is completed!')
 
 df_GN = pd.concat(dfs2, axis=0)  # axis=0 : 밑으로 붙이기
 
-###########################################################################################
+########################################################################################################################
 
 # 강북데이터와 강남데이터를 각각 edit4 폴더에 새롭게 저장한 후 합치기
 
-# df_GB.to_excel('Gangbuk_edit4/Gangbuk_total.xlsx', sheet_name='Gangbuk', index=False)
-# df_GN.to_excel('Gangnam_edit4/Gangnam_total.xlsx', sheet_name='Gangnam', index=False)
+df_GB.to_excel('Gangbuk_edit4/Gangbuk_total.xlsx', sheet_name='Gangbuk', index=False)
+df_GN.to_excel('Gangnam_edit4/Gangnam_total.xlsx', sheet_name='Gangnam', index=False)
 
-df_GB = pd.read_excel('Gangnam_edit4/Gangnam_total.xlsx', header=0, skipfooter=0)
+df_GB = pd.read_excel('Gangbuk_edit4/Gangbuk_total.xlsx', header=0, skipfooter=0)
 df_GN = pd.read_excel('Gangnam_edit4/Gangnam_total.xlsx', header=0, skipfooter=0)
 
 
@@ -75,7 +79,7 @@ df_seoul = df_seoul.reset_index(drop='Ture')
 
 # seoul data 편집하기
 
-df_seoul.replace('-', np.nan)
+df_seoul = df_seoul.replace('-', np.nan)
 
 df = df_seoul[['Gu', '읍면동', 'Apt_name']]
 df.columns = ['지역구', '법정동', '아파트']
