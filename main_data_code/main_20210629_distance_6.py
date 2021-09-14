@@ -62,7 +62,7 @@ dist_park = []
 # 엑셀 호출
 
 # 아파트 정보
-df_seoul = pd.read_excel('seminar data/Seoul_last.xlsx', header=0, skipfooter=0)
+df_seoul = pd.read_excel('Seoul_last.xlsx', header=0, skipfooter=0)
 
 #df_seoul = df_seoul_before.drop_duplicates(['아파트코드'], keep='first')  # 계산을 더 빠르게 하기위해 면적유형 제거
 #df_seoul = df_seoul.reset_index(drop='True')
@@ -147,7 +147,7 @@ df_seoul['dist_sub'] = dist_sub
 
 df_seoul['dist_park'] = dist_park
 
-df_seoul.to_excel('seminar data/Seoul_including_distance.xlsx', sheet_name='including_distance', index=False)
+df_seoul.to_excel('Seoul_including_distance.xlsx', sheet_name='including_distance', index=False)
 
 '''
 ## 예시

@@ -77,4 +77,4 @@ df_seoul = df_seoul[['지역구', '법정동', '아파트', '아파트코드', '
                      '주차대수_세대', '용적률', '건폐율', '위도', '경도', '건설사', '난방', '구조', '면적유형',  '전용면적(㎡)',
                      '전용률(%)', '방 개수', '화장실 개수']]
 
-df_seoul.to_excel('seminar data/Seoul_last.xlsx', sheet_name='last', index=False)
+df_seoul.to_excel('Seoul_last.xlsx', sheet_name='last', index=False)
