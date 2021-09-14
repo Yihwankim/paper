@@ -1,3 +1,7 @@
+# Chapter 10
+# 분기별로 수정된 자료들을 연도별로 묶고
+# 연도별 자료들을 가지고 회귀분석 실시
+# 우선 OLS 분석만 실시하고 추후 WLS 등으로 업그레이드
 
 # import packages
 from tqdm import tqdm

@@ -2,6 +2,7 @@
 # Chapter 6
 
 # 개별 아파트까지의 거리를 추가
+# 거리항목은 지하철, 초,중,고 까지의 거리, 공원까지의 거리로 정의
 
 # import packages
 import pandas as pd
