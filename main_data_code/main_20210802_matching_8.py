@@ -35,19 +35,13 @@ df_seoul['matching'] = df_seoul['법정동'] + " " + df_seoul['전용면적1'] +
 df_seoul = df_seoul.sort_values(by=['matching'])
 
 ########################################################################################################################
-length = 42  # 2010년 4분기부터 2021년 1분기까지의 데이터를 활용할 예정, 총 42분기 월단위로는 42*3=126
-'''
-42 * 3 으로 실거래가 데이터를 1부터 126으로 명명 
-따라서 10년 10월의 실거래가 자료가 1의 값을 갖게된다.
+length = 49  # 2009년 1분기부터 2021년 1분기까지의 데이터를 활용할 예정, 총 42분기 월단위로는 42*3=126
 
-15년 5월의 경우 : 10년 4분기 ~ 15년 1분기, 총 18개의 quarter = 54m 의 값을 갖게되므로 56으로 명명
-19년 1월의 경우 : 10년 4분기 ~ 18년 4분기, 총 33개의 quarter = 99m 의 값을 갖게되므로 100으로 명명 
-'''
 for i in tqdm(range(length)):
     if i == 0:
-        data01 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i + 1) + '.pkl')
-        data02 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i + 2) + '.pkl')
-        data03 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i + 3) + '.pkl')
+        data01 = pd.read_pickle('real_transaction2/df_dataset_' + str(i + 1) + '.pkl')
+        data02 = pd.read_pickle('real_transaction2/df_dataset_' + str(i + 2) + '.pkl')
+        data03 = pd.read_pickle('real_transaction2/df_dataset_' + str(i + 3) + '.pkl')
 
         # 월별 데이터를 각 분기별 데이터로 만들기
         data_quarter = pd.concat([data01, data02, data03], axis=0)
@@ -119,9 +113,9 @@ for i in tqdm(range(length)):
         df_index = df_seoul_Q
 
     else:
-        data01 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i * 3 + 1) + '.pkl')
-        data02 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i * 3 + 2) + '.pkl')
-        data03 = pd.read_pickle('real_transaction_data/df_dataset_' + str(i * 3 + 3) + '.pkl')
+        data01 = pd.read_pickle('real_transaction2/df_dataset_' + str(i * 3 + 1) + '.pkl')
+        data02 = pd.read_pickle('real_transaction2/df_dataset_' + str(i * 3 + 2) + '.pkl')
+        data03 = pd.read_pickle('real_transaction2/df_dataset_' + str(i * 3 + 3) + '.pkl')
 
         # 월별 데이터를 각 분기별 데이터로 만들기
         data_quarter = pd.concat([data01, data02, data03], axis=0)
@@ -192,4 +186,4 @@ for i in tqdm(range(length)):
 
         df_index = pd.concat([df_index, df_seoul_Q])
 
-        df_index.to_excel('Hedonic_index/Seoul_index.xlsx', index=False)
+df_index.to_excel('real_transaction2/Seoul_index.xlsx', index=False)

@@ -21,7 +21,7 @@ import datetime
 import numpy as np
 
 ########################################################################################################################
-df_hedonic = pd.read_excel('Hedonic_index/Seoul_index.xlsx', header=0, skipfooter=0)
+df_hedonic = pd.read_excel('real_transaction2/Seoul_index.xlsx', header=0, skipfooter=0)
 
 df = df_hedonic
 
@@ -38,7 +38,7 @@ df['Pr'] = cost.str.get(0) + cost.str.get(1)
 df['Pr'] = pd.to_numeric(df['Pr'])
 
 # Time dummy 생성하기
-length1 = 42
+length1 = 49
 for i in tqdm(range(length1)):
     df['D' + str(i + 1)] = np.where(df['Time'] == i + 1, 1, 0)
 
@@ -329,7 +329,6 @@ df_hedonic_index = df[['Pr', 'yr', 'num', 'car', 'car_per', 'capacity', 'room', 
                        'G1', 'G2', 'G3', 'G4', 'G5',
                        'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11']]
 
-#df_hedonic_index.to_excel('Hedonic_index/index_full_variable.xlsx', index=False)
 
 #####################################################################################################################
 df_hedonic_time = pd.DataFrame()
@@ -359,12 +358,16 @@ df_hedonic_time[['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S
 
 df_hedonic_time[['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15', 'D16',
                  'D17', 'D18', 'D19', 'D20', 'D21', 'D22', 'D23', 'D24', 'D25', 'D26', 'D27', 'D28', 'D29', 'D30',
-                 'D31', 'D32', 'D33', 'D34', 'D35', 'D36', 'D37', 'D38', 'D39', 'D40', 'D41', 'D42']]\
+                 'D31', 'D32', 'D33', 'D34', 'D35', 'D36', 'D37', 'D38', 'D39', 'D40', 'D41', 'D42', 'D43', 'D44',
+                 'D45', 'D46', 'D47', 'D48', 'D49']]\
     = df[['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15', 'D16',
           'D17', 'D18', 'D19', 'D20', 'D21', 'D22', 'D23', 'D24', 'D25', 'D26', 'D27', 'D28', 'D29', 'D30', 'D31',
-          'D32', 'D33', 'D34', 'D35', 'D36', 'D37', 'D38', 'D39', 'D40', 'D41', 'D42']]
+          'D32', 'D33', 'D34', 'D35', 'D36', 'D37', 'D38', 'D39', 'D40', 'D41', 'D42', 'D43', 'D44', 'D45', 'D46',
+          'D47', 'D48', 'D49']]
 
 df_hedonic_time[['lat', 'long']] = df[['위도', '경도']]
+
+df_hedonic_time.to_excel('real_transaction2/seoul_full_variable.xlsx', index=False)
 
 for i in tqdm(range(length1)):
     num = df_hedonic_time['D' + str(i+1)] == 1
@@ -374,13 +377,14 @@ for i in tqdm(range(length1)):
                                'Efficiency', 'dist_elem', 'dist_middle', 'dist_high', 'dist_sub', 'dist_park', 'G1',
                                'G2', 'G3', 'G4', 'G5', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10',
                                'S11', 'lat', 'long']]
-    df_quarterly.to_excel('Hedonic_index/Quarterly/seoul_apt' + str(i+1) + '.xlsx')
+    df_quarterly.to_excel('real_transaction2/quarterly/seoul_apt' + str(i+1) + '.xlsx')
 #####################################################################################################################
 for i in tqdm(range(length1)):
-    df_q = pd.read_excel('Hedonic_index/Quarterly/seoul_apt' + str(i+1) + '.xlsx', header=0, skipfooter=0)
+    df_q = pd.read_excel('real_transaction2/quarterly/seoul_apt' + str(i+1) + '.xlsx', header=0, skipfooter=0)
     df = df_q[['gu', 'dong', 'per_Pr', 'year', 'year_sq', 'num', 'car', 'car_per', 'area', 'room', 'toilet', 'floor',
                'floor_sq', 'H1', 'H2', 'H3', 'T1', 'T2', 'T3', 'C1', 'FAR', 'BC', 'Efficiency',
                'dist_elem', 'dist_middle', 'dist_high', 'dist_sub', 'dist_park', 'G1', 'G2', 'G3', 'G4', 'G5', 'S1',
                'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8', 'S9', 'S10', 'S11', 'lat', 'long']]
-    df.to_excel('Hedonic_index/Quarterly_edit/seoul_apt' + str(i+1) + '.xlsx')
+    df.to_excel('real_transaction2/quarterly_edit/seoul_apt' + str(i+1) + '.xlsx')
+
 
