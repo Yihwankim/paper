@@ -44,6 +44,6 @@ for i in range(17, 33):
 for i in range(33, 49):
     df_17to20['D' + str(i)] = np.where(df_17to20['time'] == i, 1, 0)
 
-df_09to12.to_excel('real_transaction2/yearly_edit/seoul_apt_09to12.xlsx')
-df_13to16.to_excel('real_transaction2/yearly_edit/seoul_apt_13to16.xlsx')
-df_17to20.to_excel('real_transaction2/yearly_edit/seoul_apt_17to20.xlsx')
+df_09to12.to_excel('real_transaction2/yearly_edit/seoul_apt_09to12_edit.xlsx')
+df_13to16.to_excel('real_transaction2/yearly_edit/seoul_apt_13to16_edit.xlsx')
+df_17to20.to_excel('real_transaction2/yearly_edit/seoul_apt_17to20_edit.xlsx')
